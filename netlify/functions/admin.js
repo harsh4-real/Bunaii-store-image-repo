@@ -1,6 +1,6 @@
 /* Bunaii Store — admin backend (Netlify Function)
    Secrets live ONLY in Netlify → Environment variables, never in this file:
-     ADMIN_USER, ADMIN_PASS, GITHUB_TOKEN, GITHUB_REPO  (e.g. harsh4-real/Bunaii-store-image-repo)
+     ADMIN_USER, ADMIN_PASS, GITHUB_TOKEN, GITHUB_REPO  (e.g. username/repo-name)
      GITHUB_BRANCH (optional, default "main")
    Actions: login · load · blob (upload one optimised photo) · publish (one commit = one deploy) */
 const crypto = require('crypto');
