@@ -1,0 +1,3 @@
+# Netlify: browsers must re-check with the server on every visit (cheap 304 if nothing changed)
+/*
+  Cache-Control: no-cache

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Orders — Bunaii Store</title>
+<meta name="description" content="Custom and bulk order information for Bunaii Store handcrafted crochet products.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --olive:#4a5240;--olive-dk:#2e3328;
+  --beige:#e8dece;--cream:#f7f2eb;--cream-d:#f0e9de;
+  --gold:#b89b6a;--gold-lt:#d4b98a;--gold-pale:#e8d5b0;
+  --text-dk:#2a2416;--text-md:#5a4e3a;--text-lt:#8a7d68;
+  --white:#fdfaf6;
+  --r-md:14px;--r-lg:28px;
+  --ease:.35s cubic-bezier(.25,.46,.45,.94);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Poppins',sans-serif;background:var(--cream);color:var(--text-dk);min-height:100vh;line-height:1.7}
+a{text-decoration:none;color:inherit}
+
+nav{
+  background:var(--white);border-bottom:1px solid rgba(184,155,106,.2);
+  padding:16px 24px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.nav-logo{display:flex;flex-direction:column;line-height:1.1}
+.nav-logo strong{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--olive-dk);letter-spacing:.04em}
+.nav-logo span{font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-family:'Poppins',sans-serif;font-weight:600}
+.back-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.8rem;font-weight:500;color:var(--text-lt);
+  border:1px solid rgba(184,155,106,.3);border-radius:50px;
+  padding:7px 16px;transition:var(--ease);
+}
+.back-btn:hover{background:var(--beige);color:var(--olive);border-color:var(--gold)}
+
+.page-hero{
+  background:linear-gradient(135deg,#3a4a30 0%,var(--olive) 60%,#6a7255 100%);
+  padding:64px 24px 56px;text-align:center;position:relative;overflow:hidden;
+}
+.page-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 50%,rgba(184,155,106,.2) 0%,transparent 65%);
+}
+.page-hero-icon{font-size:2.8rem;margin-bottom:14px;position:relative}
+.page-hero h1{
+  font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);
+  color:var(--white);letter-spacing:.02em;position:relative;
+}
+.page-hero p{
+  font-size:.9rem;color:rgba(247,242,235,.7);margin-top:10px;
+  letter-spacing:.04em;position:relative;
+}
+.gold-bar{width:52px;height:2px;background:var(--gold);margin:16px auto 0;border-radius:2px;position:relative}
+
+.page-wrap{max-width:780px;margin:0 auto;padding:56px 24px 80px}
+
+.chips{
+  display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;
+}
+.chip{
+  background:rgba(184,155,106,.15);border:1px solid rgba(184,155,106,.3);
+  border-radius:50px;padding:6px 16px;font-size:.78rem;font-weight:500;
+  color:var(--text-md);display:flex;align-items:center;gap:6px;
+}
+
+.policy-card{
+  background:var(--white);border-radius:var(--r-lg);
+  box-shadow:0 8px 40px rgba(74,82,64,.10);
+  padding:44px 48px;
+}
+@media(max-width:600px){.policy-card{padding:28px 22px}}
+
+.policy-card ul{
+  list-style:none;display:flex;flex-direction:column;gap:16px;
+}
+.policy-card ul li{
+  display:flex;align-items:flex-start;gap:14px;
+  font-size:.93rem;color:var(--text-md);line-height:1.75;
+}
+.policy-card ul li::before{
+  content:'';flex-shrink:0;width:8px;height:8px;
+  border-radius:50%;background:var(--gold);margin-top:8px;
+}
+
+.cta-row{
+  margin-top:36px;padding-top:32px;border-top:1px solid var(--beige);
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+}
+.cta-row p{font-size:.85rem;color:var(--text-lt);flex:1;min-width:200px}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--olive);color:var(--white);
+  padding:11px 24px;border-radius:50px;font-size:.85rem;font-weight:600;
+  letter-spacing:.04em;transition:var(--ease);white-space:nowrap;
+}
+.btn-cta:hover{background:var(--olive-dk);transform:translateY(-1px)}
+
+footer{
+  background:var(--olive-dk);text-align:center;
+  padding:24px;font-size:.75rem;color:rgba(247,242,235,.45);
+}
+footer a{color:var(--gold-lt);transition:color .2s}
+footer a:hover{color:var(--white)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <strong>Bunaii</strong>
+    <span>✦ Store.in ✦</span>
+  </div>
+  <a href="index.html" class="back-btn">
+    ← Back to Store
+  </a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-icon">✨</div>
+  <h1>Custom Orders</h1>
+  <p>We love bringing your ideas to life</p>
+  <div class="gold-bar"></div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="chips">
+    <div class="chip">🎨 Custom Colors</div>
+    <div class="chip">🌸 Bouquets</div>
+    <div class="chip">🎁 Hampers</div>
+    <div class="chip">🏷️ Personalized Creations</div>
+    <div class="chip">📦 Bulk Orders</div>
+    <div class="chip">💝 Gifting</div>
+  </div>
+
+  <div class="policy-card">
+    <ul>
+      <li>We love bringing your ideas to life!</li>
+      <li>Custom colors, designs, bouquets, hampers, and personalized creations are available.</li>
+      <li>Bulk and gifting orders are welcome. Production time may vary depending on design complexity and order quantity.</li>
+      <li>Advance payment may be required for custom orders.</li>
+    </ul>
+
+    <div class="cta-row">
+      <p>Ready to create something special? Reach out to us on Instagram or via the contact form.</p>
+      <a href="index.html#contact" class="btn-cta">
+        Get in Touch
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 14 0M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 Bunaii Store · <a href="index.html">Home</a> · <a href="shipping.html">Shipping Info</a> · <a href="returns.html">Returns &amp; Exchanges</a> · <a href="care.html">Care Instructions</a></p>
+</footer>
+
+</body>
+</html>

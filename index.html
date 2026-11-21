@@ -1,0 +1,2633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="only light">
+<meta name="supported-color-schemes" content="light">
+<meta name="darkreader-lock">
+<meta name="theme-color" content="#3a2d1c">
+<!-- Ask browsers/webviews not to reuse a stale copy of this page -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<script>
+/* ═══════════════════════════════════════════════════════════
+   ALWAYS-FRESH LOADER
+   Runs first on every open. It (1) wipes any service-worker /
+   Cache Storage leftovers, and (2) checks the live index.html
+   against the copy this phone is actually showing. If they
+   differ, it reloads once to pull the latest version.
+═══════════════════════════════════════════════════════════ */
+(function () {
+  if (!/^https?:$/.test(location.protocol)) return;          /* skip file:// previews */
+
+  /* 1 ─ Clear service workers + Cache Storage (the only caches JS can clear) */
+  try {
+    if ('serviceWorker' in navigator)
+      navigator.serviceWorker.getRegistrations()
+        .then(function (rs) { rs.forEach(function (r) { r.unregister(); }); }).catch(function(){});
+    if (window.caches && caches.keys)
+      caches.keys().then(function (ks) { ks.forEach(function (k) { caches.delete(k); }); }).catch(function(){});
+  } catch (e) {}
+
+  /* 2 ─ Compare the copy on this phone with the live copy on the server */
+  var GUARD = 'bunaii_fresh_reload_at';
+  function check() {
+    var url = location.origin + location.pathname;             /* page without ?query / #hash */
+    var shown;
+    fetch(url, { cache: 'force-cache', credentials: 'same-origin' })      /* what this phone has cached */
+      .then(function (r) { return r.text(); })
+      .then(function (t) { shown = t; return fetch(url, { cache: 'no-cache', credentials: 'same-origin' }); })  /* revalidate with server */
+      .then(function (r) { return r.text(); })
+      .then(function (live) {
+        if (!live || live === shown) return;                   /* already latest */
+        /* don't wipe an in-progress cart, and never reload more than once / 30s */
+        if (typeof cart !== 'undefined' && cart.length) return;
+        var last = +sessionStorage.getItem(GUARD) || 0;
+        if (Date.now() - last < 30000) return;
+        sessionStorage.setItem(GUARD, String(Date.now()));
+        location.replace(url + '?v=' + Date.now() + location.hash);          /* new URL = guaranteed network fetch */
+      })
+      .catch(function () {});                                  /* offline / blocked: just show what we have */
+  }
+
+  if (document.readyState === 'complete') check();
+  else window.addEventListener('load', check);
+  /* Android restores tabs from back/forward cache — re-check then too */
+  window.addEventListener('pageshow', function (e) { if (e.persisted) check(); });
+})();
+</script>
+<title>Bunaii Store — Handcrafted Crochet</title>
+<meta name="description" content="Bunaii Store – Premium handcrafted crochet pieces. Artisan fashion for the modern woman.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Preload the first hero image so it appears as fast as possible (it's the largest visible element on load) -->
+<link rel="preload" as="image" href="White%20Daisy%20bag.webp" type="image/webp" fetchpriority="high">
+<style>
+
+/* ═══════════════════════════════════════════════════════════
+   ROOT TOKENS
+═══════════════════════════════════════════════════════════ */
+:root {
+  /* Bunaii dark-brown theme — fixed on every phone / browser / OS mode */
+  --olive:        #3d4639;
+  --olive-lt:     #6b7a5c;
+  --olive-dk:     #241b10;
+  --beige:        #3f301d;
+  --cream:        #30251a;
+  --cream-d:      #3a2d1c;
+  --gold:         #b89b6a;
+  --gold-lt:      #d4b98a;
+  --gold-pale:    #5e4a2e;
+  --brown:        #7a5c3e;
+  --brown-lt:     #c49a6c;
+  --text-dk:      #d6cdc2;
+  --text-md:      #b8ad9e;
+  --text-lt:      #968a78;
+  --white:        #2d1d0e;
+  --head:         #d6cdc2;   /* headings */
+  --accent-tx:    #e4dacb;   /* prices, icons, hover text */
+  --on-olive:     #f1e8da;   /* text sitting on green / gold buttons */
+  --sh-soft:      0 4px 24px rgba(0,0,0,.25);
+  --sh-card:      0 8px 32px rgba(0,0,0,.32);
+  --sh-hover:     0 16px 48px rgba(0,0,0,.40);
+  --r-sm:  6px;
+  --r-md: 14px;
+  --r-lg: 28px;
+  --r-xl: 48px;
+  --ease: .35s cubic-bezier(.25,.46,.45,.94);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px;color-scheme:only light;-webkit-text-size-adjust:100%}
+body{font-family:'Poppins',sans-serif;background:var(--cream);color:var(--text-dk);overflow-x:hidden;line-height:1.7}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+ul{list-style:none}
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL SEARCH OVERLAY
+═══════════════════════════════════════════════════════════ */
+.gso {
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(48,37,26,.97);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+  overflow:hidden;
+}
+.gso.open{opacity:1;pointer-events:all}
+
+/* Header bar */
+.gso-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 36px;
+  border-bottom:1px solid var(--gold-pale);
+  flex-shrink:0;
+}
+.gso-brand{
+  font-family:'Playfair Display',serif;
+  font-size:1.3rem;font-weight:700;color:var(--head);
+  display:flex;flex-direction:column;line-height:1.1;
+}
+.gso-brand span{
+  font-family:'Poppins',sans-serif;font-size:.52rem;
+  letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;
+}
+.gso-close{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--cream-d);border:1.5px solid var(--gold-pale);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;color:var(--text-md);cursor:pointer;
+  transition:var(--ease);flex-shrink:0;
+}
+.gso-close:hover{background:var(--beige);color:var(--accent-tx);transform:rotate(90deg)}
+
+/* Input */
+.gso-input-row{
+  padding:24px 36px 0;flex-shrink:0;position:relative;
+}
+.gso-input-row svg{
+  position:absolute;left:52px;top:50%;transform:translateY(-50%);
+  color:var(--gold);pointer-events:none;
+}
+.gso-input{
+  width:100%;padding:17px 22px 17px 54px;
+  background:var(--white);
+  border:2px solid var(--gold-pale);border-radius:var(--r-xl);
+  font-family:'Playfair Display',serif;font-size:1.45rem;
+  color:var(--text-dk);outline:none;
+  box-shadow:var(--sh-soft);transition:var(--ease);
+}
+.gso-input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,155,106,.12)}
+.gso-input::placeholder{color:var(--text-lt);font-style:italic}
+
+/* Meta bar */
+.gso-meta{
+  padding:12px 36px 0;display:flex;
+  align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;flex-shrink:0;
+}
+.gso-count{font-size:.78rem;color:var(--text-lt)}
+.gso-pills{display:flex;gap:8px;flex-wrap:wrap}
+.gso-pill{
+  padding:5px 15px;border-radius:var(--r-xl);
+  font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--cream-d);color:var(--text-md);
+  border:1.5px solid var(--gold-pale);cursor:pointer;
+  transition:var(--ease);
+}
+.gso-pill:hover,.gso-pill.active{background:var(--olive);color:var(--on-olive);border-color:var(--olive)}
+
+/* Popular */
+.gso-popular{padding:16px 36px 0;flex-shrink:0}
+.gso-pop-label{
+  font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);display:block;margin-bottom:10px;
+}
+.gso-tags{display:flex;gap:8px;flex-wrap:wrap}
+.gso-tag{
+  padding:6px 15px;border-radius:var(--r-xl);
+  background:var(--cream-d);border:1px solid var(--gold-pale);
+  font-size:.76rem;color:var(--text-md);cursor:pointer;
+  transition:var(--ease);
+}
+.gso-tag:hover{background:var(--beige);color:var(--accent-tx)}
+
+/* Results grid */
+.gso-results{
+  flex:1;overflow-y:auto;
+  padding:18px 36px 36px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px;align-content:start;
+}
+.gso-results::-webkit-scrollbar{width:4px}
+.gso-results::-webkit-scrollbar-track{background:transparent}
+.gso-results::-webkit-scrollbar-thumb{background:var(--gold-pale);border-radius:4px}
+
+/* Result card */
+.grc{
+  background:var(--white);border-radius:var(--r-md);
+  overflow:hidden;box-shadow:var(--sh-soft);
+  cursor:pointer;transition:var(--ease);
+  border:1px solid transparent;
+}
+.grc:hover{box-shadow:var(--sh-card);border-color:var(--gold-pale);transform:translateY(-3px)}
+.grc-img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--cream-d)}
+.grc-body{padding:11px 13px}
+.grc-cat{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-lt)}
+.grc-name{font-family:'Playfair Display',serif;font-size:.88rem;color:var(--text-dk);font-weight:600;margin:2px 0 3px;line-height:1.3}
+.grc-price{font-size:.8rem;font-weight:700;color:var(--accent-tx)}
+
+/* Empty state */
+.gso-empty{
+  grid-column:1/-1;text-align:center;padding:60px 20px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.gso-empty-icon{font-size:2.8rem}
+.gso-empty h3{font-family:'Playfair Display',serif;color:var(--head)}
+.gso-empty p{font-size:.83rem;color:var(--text-lt)}
+
+/* Highlight */
+.gso-hl{background:rgba(184,155,106,.4);color:inherit;border-radius:3px;padding:0 2px}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════════════════════════ */
+.container{max-width:1320px;margin:0 auto;padding:0 24px}
+.serif{font-family:'Playfair Display',serif}
+h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
+
+.sec-label{
+  font-size:.7rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:10px;
+}
+.sec-label::before,.sec-label::after{content:'';flex:1;max-width:40px;height:1px;background:var(--gold-pale)}
+.sec-heading{font-size:clamp(1.9rem,3.6vw,2.9rem);color:var(--head);margin:10px 0 6px}
+.sec-sub{font-size:.92rem;color:var(--text-lt);max-width:500px}
+
+/* Search trigger (reused across sections) */
+.search-trigger{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--white);border:1.5px solid var(--gold-pale);
+  border-radius:var(--r-xl);padding:11px 20px;
+  font-size:.8rem;color:var(--text-lt);cursor:pointer;
+  transition:var(--ease);font-family:'Poppins',sans-serif;
+  box-shadow:var(--sh-soft);
+}
+.search-trigger:hover{border-color:var(--gold);box-shadow:var(--sh-card);color:var(--text-md)}
+.search-trigger svg{color:var(--gold);flex-shrink:0}
+.search-trigger span{font-style:italic}
+
+/* Dark search trigger (for olive bg sections) */
+.search-trigger-dk{
+  display:inline-flex;align-items:center;gap:9px;
+  background:rgba(247,242,235,.1);border:1.5px solid rgba(184,155,106,.35);
+  border-radius:var(--r-xl);padding:11px 20px;
+  font-size:.8rem;color:rgba(247,242,235,.8);cursor:pointer;
+  transition:var(--ease);font-family:'Poppins',sans-serif;
+}
+.search-trigger-dk:hover{background:rgba(247,242,235,.18);border-color:var(--gold-lt);color:var(--on-olive)}
+.search-trigger-dk svg{color:var(--gold-lt);flex-shrink:0}
+
+/* Buttons */
+.btn-primary{
+  background:var(--olive);color:var(--on-olive);
+  padding:13px 30px;border-radius:var(--r-xl);
+  font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  transition:var(--ease);display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary:hover{background:var(--olive-dk);transform:translateY(-2px);box-shadow:0 8px 24px rgba(74,82,64,.28)}
+.btn-outline{
+  background:transparent;color:var(--accent-tx);
+  padding:12px 28px;border-radius:var(--r-xl);
+  font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  border:1.5px solid var(--olive-lt);transition:var(--ease);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-outline:hover{background:var(--olive);color:var(--on-olive);border-color:var(--olive)}
+
+/* Fade-up animation */
+.fu{opacity:0;transform:translateY(30px);transition:opacity .65s ease,transform .65s ease}
+.fu.vis{opacity:1;transform:translateY(0)}
+.fu.d1{transition-delay:.08s}.fu.d2{transition-delay:.16s}.fu.d3{transition-delay:.24s}.fu.d4{transition-delay:.32s}
+
+/* Scroll to top */
+#stt{
+  position:fixed;bottom:28px;right:28px;z-index:800;
+  width:46px;height:46px;border-radius:50%;
+  background:var(--olive);color:var(--on-olive);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;box-shadow:var(--sh-card);
+  opacity:0;pointer-events:none;transition:var(--ease);
+}
+#stt.show{opacity:1;pointer-events:all}
+#stt:hover{background:var(--olive-dk);transform:translateY(-3px)}
+
+/* ═══════════════════════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════════════════════ */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:890;
+  background:rgba(58,45,28,.95);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(184,155,106,.15);
+  transition:box-shadow .3s;
+}
+#navbar.scrolled{box-shadow:0 4px 24px rgba(74,82,64,.1)}
+
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:70px;max-width:1320px;margin:0 auto;
+}
+/* Bunaii Store.in logo — used in navbar, search overlay and footer.
+   Whole logo is one link back to the home page. */
+.nav-logo{
+  display:inline-flex;flex-direction:column;align-items:stretch;gap:5px;
+  line-height:1;white-space:nowrap;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-logo .logo-word{
+  font-family:'Playfair Display',serif;font-weight:700;font-size:1.75rem;
+  color:#dfe6d6;letter-spacing:.01em;line-height:1;
+}
+.nav-logo .logo-sub{
+  display:flex;align-items:center;justify-content:space-between;gap:6px;
+  font-family:'Poppins',sans-serif;font-weight:600;font-size:.56rem;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--gold);line-height:1;
+}
+.nav-logo .logo-sub i{font-style:normal;font-size:.72rem;letter-spacing:0;line-height:1}
+
+.nav-links{display:flex;align-items:center;gap:30px}
+.nav-links a{
+  font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-md);position:relative;padding-bottom:3px;transition:color .2s;
+}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--gold);transform:scaleX(0);transform-origin:center;transition:transform .3s}
+.nav-links a:hover{color:var(--accent-tx)}
+.nav-links a:hover::after{transform:scaleX(1)}
+
+.nav-right{display:flex;align-items:center;gap:12px}
+
+/* Nav search pill */
+.nav-search-pill{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(94,74,46,.35);border:1.5px solid var(--gold-pale);
+  border-radius:var(--r-xl);padding:7px 16px;
+  font-size:.76rem;color:var(--text-lt);cursor:pointer;
+  transition:var(--ease);font-family:'Poppins',sans-serif;
+}
+.nav-search-pill:hover{background:var(--white);border-color:var(--gold);color:var(--text-md)}
+.nav-search-pill svg{color:var(--gold)}
+
+/* Cart icon */
+.cart-icon{
+  position:relative;background:none;padding:7px;
+  color:var(--accent-tx);transition:var(--ease);
+}
+.cart-icon:hover{color:var(--gold);transform:scale(1.1)}
+.cart-badge{
+  position:absolute;top:-1px;right:-3px;
+  background:var(--gold);color:var(--on-olive);
+  font-size:.58rem;font-weight:700;width:17px;height:17px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .2s;
+}
+.cart-badge.on{opacity:1}
+
+/* Hamburger */
+.burger{display:none;flex-direction:column;gap:5px;background:none;padding:6px}
+.burger span{display:block;width:23px;height:2px;background:var(--olive-lt);border-radius:2px;transition:var(--ease)}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile drawer */
+.mob-nav{
+  display:none;position:fixed;top:70px;left:0;right:0;bottom:0;
+  background:var(--cream);z-index:889;padding:28px 24px;
+  flex-direction:column;gap:6px;overflow-y:auto;
+}
+.mob-nav.open{display:flex}
+.mob-nav a{
+  font-size:1rem;font-weight:500;color:var(--text-md);
+  padding:13px 0;border-bottom:1px solid var(--gold-pale);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.mob-search-row{
+  display:flex;align-items:center;gap:10px;
+  background:var(--cream-d);border:1.5px solid var(--gold-pale);
+  border-radius:var(--r-xl);padding:14px 18px;cursor:pointer;
+  margin-bottom:8px;transition:var(--ease);
+}
+.mob-search-row:hover{border-color:var(--gold)}
+.mob-search-row svg{color:var(--gold)}
+.mob-search-row span{font-size:.88rem;color:var(--text-md)}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════ */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  position:relative;overflow:hidden;padding-top:70px;
+  background:linear-gradient(135deg,var(--cream-d) 0%,var(--beige) 55%,#46361f 100%);
+}
+.hero::before{
+  content:'';position:absolute;width:640px;height:640px;border-radius:50%;
+  background:radial-gradient(circle,rgba(184,155,106,.12) 0%,transparent 70%);
+  top:-120px;right:-80px;pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(74,82,64,.07) 0%,transparent 70%);
+  bottom:-60px;left:-60px;pointer-events:none;
+}
+
+.hero-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+  max-width:1320px;margin:0 auto;padding:80px 24px;position:relative;z-index:2;
+}
+
+.hero-eyebrow{
+  font-size:.7rem;font-weight:600;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--gold);display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;
+}
+.hero-eyebrow::before{content:'';width:30px;height:1.5px;background:var(--gold)}
+.hero-title{font-size:clamp(2.6rem,5.2vw,4.6rem);color:var(--head);line-height:1.08;margin-bottom:18px}
+.hero-title em{font-style:italic;color:var(--brown-lt)}
+.hero-desc{font-size:.98rem;font-weight:500;color:#eadfce;max-width:430px;line-height:1.8;margin-bottom:26px}
+.hero-desc strong{font-weight:600;color:var(--gold-lt)}
+
+/* Hero search bar */
+.hero-searchbar{
+  display:flex;align-items:center;gap:0;
+  background:var(--white);border:2px solid var(--gold-pale);
+  border-radius:var(--r-xl);padding:6px 6px 6px 18px;
+  box-shadow:var(--sh-soft);margin-bottom:28px;max-width:460px;
+  cursor:pointer;transition:var(--ease);
+}
+.hero-searchbar:hover{border-color:var(--gold);box-shadow:var(--sh-card)}
+.hero-searchbar svg{color:var(--gold);flex-shrink:0;margin-right:10px}
+.hero-search-hint{flex:1;font-size:.88rem;color:var(--text-lt);font-style:italic;user-select:none}
+.hero-search-go{
+  background:var(--olive);color:var(--on-olive);padding:10px 20px;
+  border-radius:var(--r-xl);font-size:.72rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;transition:var(--ease);
+}
+.hero-search-go:hover{background:var(--olive-dk)}
+
+.hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hero-stats{margin-top:36px;display:flex;gap:40px}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--head);line-height:1}
+.stat-lbl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-lt);margin-top:3px}
+
+/* Hero visual */
+.hero-visual{position:relative;display:flex;justify-content:center}
+.hero-img-wrap{position:relative;width:88%;max-width:450px}
+.hero-img-wrap img{
+  width:100%;border-radius:var(--r-lg) var(--r-lg) 110px var(--r-lg);
+  box-shadow:22px 30px 70px rgba(74,82,64,.22);object-fit:cover;aspect-ratio:3/4;
+  background:var(--beige);
+}
+/* Hero slideshow */
+.hero-slideshow{
+  width:100%;aspect-ratio:3/4;
+  border-radius:var(--r-lg) var(--r-lg) 110px var(--r-lg);
+  box-shadow:22px 30px 70px rgba(74,82,64,.22);
+  overflow:hidden;position:relative;background:var(--beige);
+}
+.hero-slide{
+  position:absolute;inset:0;opacity:0;transition:opacity 1s ease;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;
+}
+.hero-slide.active{opacity:1}
+.hero-slide img{width:100%;height:100%;object-fit:cover}
+/* Placeholder slide (shown when no real images) */
+.hero-slide-ph{
+  width:100%;height:100%;
+  background:linear-gradient(145deg,var(--beige) 0%,var(--cream-d) 50%,var(--gold-pale) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+}
+.hero-slide-ph span{font-size:3.5rem}
+.hero-slide-ph p{font-size:.75rem;color:var(--text-lt);letter-spacing:.12em;text-transform:uppercase}
+/* Slide dots */
+.hero-slide-dots{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:3;
+}
+.hero-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(247,242,235,.45);border:1px solid rgba(184,155,106,.4);
+  cursor:pointer;transition:var(--ease);
+}
+.hero-dot.active{background:var(--gold);border-color:var(--gold);width:18px;border-radius:4px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ═══════════════════════════════════════════════════════════
+   PROMO BANNERS — swipeable carousel (Forever Flowers ⇄ Best Seller)
+═══════════════════════════════════════════════════════════ */
+.promo-banners{width:100%;position:relative;overflow:hidden;background:var(--cream-d)}
+.promo-track{display:flex;width:200%;touch-action:pan-y;cursor:grab;transition:transform .45s cubic-bezier(.25,.46,.45,.94)}
+.promo-track.dragging{transition:none;cursor:grabbing}
+.promo-banner{width:50%;flex-shrink:0;display:block;line-height:0}
+.promo-banner img{width:100%;height:auto;display:block;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+.promo-dots{
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  display:flex;gap:7px;z-index:3;
+}
+.promo-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.4);border:1px solid rgba(0,0,0,.25);
+  cursor:pointer;transition:var(--ease);
+}
+.promo-dot.active{background:var(--gold);border-color:var(--gold);width:20px;border-radius:4px}
+
+/* ═══════════════════════════════════════════════════════════
+   MARQUEE TAPE
+═══════════════════════════════════════════════════════════ */
+.marquee-wrap{background:var(--olive);padding:13px 0;overflow:hidden}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 26s linear infinite}
+.marquee-track span{
+  font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-lt);padding:0 30px;
+  display:inline-flex;align-items:center;gap:30px;
+}
+.marquee-track span::after{content:'✦';color:var(--gold-lt)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Thread divider */
+.thread-div{
+  display:flex;align-items:center;gap:14px;max-width:360px;margin:0 auto;padding:20px 0;
+}
+.thread-div::before,.thread-div::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-pale),transparent)}
+.thread-div-icon{color:var(--gold);font-size:1rem}
+
+/* ═══════════════════════════════════════════════════════════
+   COLLECTIONS  (#collections)
+═══════════════════════════════════════════════════════════ */
+.collections-sec{padding:72px 0 56px}
+
+.collections-head{text-align:center;margin-bottom:36px}
+.collections-head .sec-label{justify-content:center}
+.collections-head .sec-sub{margin:0 auto 20px;text-align:center}
+
+.cat-row{
+  display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;
+}
+.cat-row::-webkit-scrollbar{display:none}
+.cat-card{
+  flex:0 0 196px;border-radius:var(--r-lg);overflow:hidden;cursor:pointer;
+  transition:var(--ease);background:var(--beige);box-shadow:var(--sh-soft);
+}
+.cat-card:hover{transform:translateY(-6px);box-shadow:var(--sh-hover)}
+.cat-img-wrap{height:210px;overflow:hidden;background:linear-gradient(180deg,#3a2d1c,#50391d);position:relative}
+.cat-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.cat-card:hover .cat-img-wrap img{transform:scale(1.07)}
+/* Placeholder for missing category images */
+.cat-ph{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(145deg,var(--cream-d),var(--gold-pale));
+}
+.cat-ph span{font-size:2.4rem}
+.cat-ph p{font-size:.65rem;color:var(--text-lt);letter-spacing:.1em;text-transform:uppercase}
+.cat-foot{padding:14px 16px;background:var(--white);text-align:center}
+.cat-foot-name{font-family:'Playfair Display',serif;font-size:.97rem;font-weight:600;color:var(--head)}
+.cat-foot-count{font-size:.7rem;color:var(--text-lt);margin-top:2px}
+
+/* ═══════════════════════════════════════════════════════════
+   SHOP  (#shop)
+═══════════════════════════════════════════════════════════ */
+.shop-sec{padding:72px 0}
+
+.shop-toolbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:28px;
+}
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap;flex:1;position:relative}
+.ftab{
+  padding:8px 20px;border-radius:var(--r-xl);
+  font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--cream-d);color:var(--text-md);
+  border:1.5px solid transparent;transition:var(--ease);
+}
+.ftab:hover{border-color:var(--gold-pale);color:var(--accent-tx)}
+.ftab.active{background:var(--olive);color:var(--on-olive);border-color:var(--olive);box-shadow:0 4px 14px rgba(74,82,64,.2)}
+
+/* Products grid */
+.prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+
+/* Product card */
+.pcard{
+  border-radius:var(--r-lg);background:var(--white);
+  overflow:hidden;box-shadow:var(--sh-soft);
+  transition:var(--ease);position:relative;
+}
+.pcard:hover{box-shadow:var(--sh-hover);transform:translateY(-6px)}
+.pcard.hidden{display:none}
+
+.pcard-img{position:relative;overflow:hidden;aspect-ratio:1/1;cursor:pointer}
+.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .55s ease}
+.pcard:hover .pcard-img img{transform:scale(1.07)}
+
+/* Product image placeholder */
+.pcard-ph{
+  width:100%;height:100%;
+  background:linear-gradient(145deg,var(--cream-d) 0%,var(--gold-pale) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+}
+.pcard-ph span{font-size:3rem}
+.pcard-ph p{font-size:.65rem;color:var(--text-lt);letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:0 10px}
+
+.pbadge{
+  position:absolute;top:13px;left:13px;
+  padding:4px 11px;border-radius:var(--r-sm);
+  font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+}
+.pbadge-sale{background:var(--brown);color:var(--on-olive)}
+.pbadge-new{background:var(--olive);color:var(--on-olive)}
+.pbadge-best{background:var(--gold);color:var(--on-olive)}
+
+.pwish{
+  position:absolute;top:13px;right:13px;width:35px;height:35px;border-radius:50%;
+  color:#f4ece0;background:#2d1d0e;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:.95rem;cursor:pointer;
+  transition:var(--ease);z-index:2;opacity:0;transform:translateY(-4px);
+}
+.pcard:hover .pwish{opacity:1;transform:translateY(0)}
+.pwish.on{color:#c0392b}
+.pwish:hover{background:var(--cream);transform:scale(1.1)}
+
+.pqv{
+  position:absolute;bottom:13px;left:50%;transform:translateX(-50%) translateY(7px);
+  background:rgba(48,37,26,.92);backdrop-filter:blur(8px);
+  color:var(--accent-tx);padding:7px 20px;border-radius:var(--r-xl);
+  font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  white-space:nowrap;opacity:0;transition:var(--ease);
+  border:1px solid rgba(184,155,106,.3);
+}
+.pcard:hover .pqv{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.pcard-body{padding:15px 17px 19px}
+.pcard-cat{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-lt);margin-bottom:3px}
+.pcard-name{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:600;color:var(--text-dk);margin-bottom:7px;line-height:1.3;cursor:pointer}
+.pcard-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.pcard-price{font-size:.92rem;font-weight:700;color:var(--accent-tx)}
+.pcard-price s{font-weight:400;color:var(--text-lt);font-size:.78rem;margin-right:5px}
+.stars{display:flex;gap:2px;font-size:.72rem}
+
+.padd{
+  width:100%;padding:10px;
+  background:var(--cream-d);color:var(--gold-lt);
+  border-radius:var(--r-md);font-size:.75rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  transition:var(--ease);display:flex;align-items:center;justify-content:center;gap:7px;
+  border:1.5px solid var(--gold-pale);
+}
+.padd:hover{background:var(--olive);color:var(--on-olive);border-color:var(--olive);box-shadow:0 4px 14px rgba(74,82,64,.2)}
+
+.no-results{
+  grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--text-lt);
+}
+.no-results .icon{font-size:2.8rem;margin-bottom:10px}
+.no-results h3{font-family:'Playfair Display',serif;color:var(--head);margin-bottom:6px}
+
+.load-more-row{text-align:center;margin-top:40px}
+
+/* ═══════════════════════════════════════════════════════════
+   ABOUT  (#about)
+═══════════════════════════════════════════════════════════ */
+.about-sec{
+  padding:80px 0;
+  background:linear-gradient(135deg,var(--olive-dk) 0%,var(--olive) 100%);
+  position:relative;overflow:hidden;
+}
+.about-sec::before{
+  content:'';position:absolute;top:-35%;right:-8%;
+  width:580px;height:580px;border-radius:50%;
+  background:rgba(184,155,106,.07);pointer-events:none;
+}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:center}
+
+/* Image mosaic */
+.about-mosaic{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.about-mosaic .tile{border-radius:var(--r-md);overflow:hidden;background:rgba(184,155,106,.12)}
+.about-mosaic .tile img{width:100%;height:100%;object-fit:cover}
+.about-mosaic .tile:nth-child(1){height:250px}
+.about-mosaic .tile:nth-child(2){height:170px;margin-top:38px}
+.about-mosaic .tile:nth-child(3){height:170px;margin-top:-38px}
+.about-mosaic .tile:nth-child(4){height:250px}
+/* Mosaic placeholder tiles */
+.tile-ph{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  background:rgba(184,155,106,.12);
+}
+.tile-ph span{font-size:2rem}
+.tile-ph p{font-size:.6rem;color:rgba(247,242,235,.5);letter-spacing:.1em;text-transform:uppercase}
+
+.about-label{color:var(--gold-lt)}
+.about-label::before,.about-label::after{background:rgba(184,155,106,.3)}
+.about-content h2{color:var(--on-olive);font-size:clamp(1.85rem,3.2vw,2.6rem);margin:12px 0 15px}
+.about-content p{color:rgba(247,242,235,.72);line-height:1.9;font-size:.88rem;margin-bottom:14px}
+
+.about-feats{display:flex;flex-direction:column;gap:13px;margin:24px 0}
+.feat-row{display:flex;align-items:flex-start;gap:13px}
+.feat-icon{
+  width:42px;height:42px;border-radius:11px;flex-shrink:0;
+  background:rgba(184,155,106,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;border:1px solid rgba(184,155,106,.2);
+}
+.feat-text b{display:block;color:var(--on-olive);font-weight:600;font-size:.88rem}
+.feat-text span{color:rgba(247,242,235,.55);font-size:.78rem}
+
+.about-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:28px}
+
+/* ═══════════════════════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════════════════════ */
+.testi-sec{padding:80px 0;background:var(--cream-d)}
+.testi-head{text-align:center;margin-bottom:44px}
+.testi-head .sec-label{justify-content:center}
+
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.tcard{
+  background:var(--white);border-radius:var(--r-lg);padding:30px;
+  box-shadow:var(--sh-soft);border:1px solid rgba(184,155,106,.1);
+  position:relative;transition:var(--ease);
+}
+.tcard:hover{box-shadow:var(--sh-card);transform:translateY(-4px)}
+.tcard::before{
+  content:'\201C';position:absolute;top:14px;left:22px;
+  font-family:'Playfair Display',serif;font-size:3.8rem;color:var(--gold-pale);line-height:1;
+}
+.tcard-text{font-size:.87rem;color:var(--text-md);line-height:1.85;margin:22px 0 18px}
+.tcard-author{display:flex;align-items:center;gap:11px}
+.tcard-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid var(--gold-pale);background:var(--cream-d);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.tcard-name{font-weight:600;font-size:.86rem;color:var(--text-dk)}
+.tcard-loc{font-size:.7rem;color:var(--text-lt)}
+
+/* ═══════════════════════════════════════════════════════════
+   FAQ
+═══════════════════════════════════════════════════════════ */
+.faq-sec{padding:72px 0;background:var(--cream)}
+.faq-head{text-align:center;margin-bottom:40px}
+.faq-head .sec-label{justify-content:center}
+
+.faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.faq-item{
+  background:var(--white);border-radius:var(--r-md);
+  border:1px solid var(--gold-pale);overflow:hidden;
+  box-shadow:var(--sh-soft);
+}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;background:none;text-align:left;
+  font-family:'Poppins',sans-serif;font-size:.9rem;font-weight:600;
+  color:var(--text-dk);cursor:pointer;gap:16px;
+  transition:var(--ease);
+}
+.faq-q:hover{color:var(--accent-tx)}
+.faq-icon{
+  width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold-pale);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:.9rem;transition:var(--ease);color:var(--gold);
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--olive);border-color:var(--olive);color:var(--on-olive)}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;
+  padding:0 24px;font-size:.86rem;color:var(--text-md);line-height:1.85;
+}
+.faq-item.open .faq-a{max-height:300px;padding:0 24px 20px}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTACT  (#contact)
+═══════════════════════════════════════════════════════════ */
+.contact-sec{padding:80px 0;background:var(--beige)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:60px;align-items:start}
+
+.contact-info .sec-label{margin-bottom:10px}
+.contact-info h2{font-size:clamp(1.7rem,2.8vw,2.3rem);color:var(--head);margin-bottom:14px}
+.contact-info p{color:var(--text-md);font-size:.88rem;line-height:1.85;margin-bottom:22px}
+.contact-detail{display:flex;align-items:flex-start;gap:11px;margin-bottom:12px;font-size:.86rem;color:var(--text-md)}
+.c-icon{font-size:1rem;flex-shrink:0;margin-top:2px}
+.contact-search-row{margin-top:26px}
+
+.cform{background:var(--white);border-radius:var(--r-lg);padding:34px;box-shadow:var(--sh-soft)}
+.cform h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--head);margin-bottom:18px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fgrp{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fgrp label{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-md)}
+.finput{
+  padding:11px 15px;background:var(--cream-d);
+  border:1.5px solid var(--gold-pale);border-radius:var(--r-md);
+  font-family:'Poppins',sans-serif;font-size:.83rem;color:var(--text-dk);outline:none;
+  transition:var(--ease);
+}
+.finput:focus{border-color:var(--gold);background:var(--white);box-shadow:0 0 0 3px rgba(184,155,106,.1)}
+.finput::placeholder{color:var(--text-lt)}
+textarea.finput{resize:vertical;min-height:100px}
+
+/* ═══════════════════════════════════════════════════════════
+   NEWSLETTER
+═══════════════════════════════════════════════════════════ */
+.nl-sec{
+  padding:80px 0;background:var(--cream);text-align:center;
+  position:relative;overflow:hidden;
+}
+.nl-sec::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 20% 50%,rgba(184,155,106,.1) 0%,transparent 50%),
+             radial-gradient(circle at 80% 50%,rgba(74,82,64,.08) 0%,transparent 50%);
+}
+.nl-inner{position:relative;z-index:1;max-width:540px;margin:0 auto}
+.nl-inner h2{font-size:clamp(1.75rem,2.8vw,2.4rem);color:var(--head);margin-bottom:11px}
+.nl-inner p{color:var(--text-md);margin-bottom:26px;font-size:.88rem}
+.nl-form{display:flex;gap:10px;max-width:420px;margin:0 auto}
+.nl-form input{
+  flex:1;padding:13px 18px;background:var(--white);
+  border:1.5px solid var(--gold-pale);border-radius:var(--r-xl);
+  font-family:'Poppins',sans-serif;font-size:.83rem;color:var(--text-dk);outline:none;
+  transition:var(--ease);
+}
+.nl-form input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,155,106,.1)}
+.nl-form input::placeholder{color:var(--text-lt)}
+.nl-note{font-size:.7rem;color:var(--text-lt);margin-top:12px}
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════ */
+footer{background:var(--olive-dk);color:var(--on-olive);padding:70px 0 0}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:46px;margin-bottom:52px}
+
+.foot-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:5px;line-height:1}
+.foot-logo span{font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;font-family:'Poppins',sans-serif;color:var(--gold-lt);font-weight:600;display:block}
+.foot-tagline{font-size:.8rem;color:rgba(247,242,235,.55);line-height:1.75;max-width:250px;margin-top:11px}
+.foot-socials{display:flex;gap:9px;margin-top:22px}
+.fsoc{
+  width:36px;height:36px;border-radius:50%;
+  border:1.5px solid rgba(184,155,106,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:var(--gold-lt);transition:var(--ease);
+}
+.fsoc:hover{background:var(--gold);border-color:var(--gold);color:var(--on-olive)}
+
+.foot-col h4{font-size:.74rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:18px}
+.foot-col ul{display:flex;flex-direction:column;gap:9px}
+.foot-col a{font-size:.81rem;color:rgba(247,242,235,.6);transition:color .2s}
+.foot-col a:hover{color:var(--on-olive)}
+.fc-detail{display:flex;align-items:flex-start;gap:9px;font-size:.81rem;color:rgba(247,242,235,.6);margin-bottom:9px}
+.fc-icon{color:var(--gold-lt);flex-shrink:0;margin-top:2px}
+
+.foot-bottom{
+  border-top:1px solid rgba(184,155,106,.15);padding:18px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;max-width:1320px;margin:0 auto;
+}
+.foot-copy{font-size:.75rem;color:rgba(247,242,235,.35)}
+.pay-icons{display:flex;gap:7px}
+.picon{padding:4px 9px;border:1px solid rgba(184,155,106,.2);border-radius:4px;font-size:.62rem;font-weight:700;color:rgba(247,242,235,.45);letter-spacing:.05em}
+
+/* ═══════════════════════════════════════════════════════════
+   CART DRAWER
+═══════════════════════════════════════════════════════════ */
+.cart-overlay{position:fixed;inset:0;background:rgba(14,9,4,.6);z-index:9790;opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-drawer{
+  position:fixed;top:0;right:0;bottom:0;width:390px;max-width:94vw;
+  background:var(--cream);z-index:9799;
+  transform:translateX(100%);transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+  display:flex;flex-direction:column;box-shadow:-6px 0 36px rgba(42,36,22,.14);
+}
+.cart-drawer.open{transform:translateX(0)}
+.cart-hd{padding:22px;border-bottom:1px solid var(--gold-pale);display:flex;align-items:center;justify-content:space-between}
+.cart-hd h3{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--head)}
+.cart-x{background:var(--cream-d);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--text-md);cursor:pointer;transition:var(--ease)}
+.cart-x:hover{background:var(--beige)}
+.cart-items-wrap{flex:1;overflow-y:auto;padding:18px}
+.ci{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid var(--gold-pale)}
+.ci-img{width:70px;height:86px;border-radius:var(--r-md);object-fit:cover;flex-shrink:0;background:var(--cream-d)}
+.ci-info{flex:1}
+.ci-name{font-weight:600;font-size:.86rem;color:var(--text-dk);margin-bottom:3px}
+.ci-price{font-size:.83rem;color:var(--accent-tx);font-weight:700}
+.ci-rm{background:none;font-size:.73rem;color:var(--text-lt);margin-top:5px;padding:0;text-decoration:underline;cursor:pointer;transition:color .2s}
+.ci-rm:hover{color:var(--brown)}
+.qctrl{display:flex;align-items:center;gap:7px;margin-top:8px}
+.qb{width:27px;height:27px;border-radius:50%;background:var(--cream-d);border:1px solid var(--gold-pale);display:flex;align-items:center;justify-content:center;font-size:.95rem;cursor:pointer;transition:var(--ease)}
+.qb:hover{background:var(--olive);color:var(--on-olive)}
+.qn{font-size:.85rem;font-weight:600;min-width:18px;text-align:center}
+.cart-empty-state{text-align:center;padding:56px 18px;display:flex;flex-direction:column;align-items:center;gap:11px}
+.cart-empty-state .ei{font-size:3.2rem}
+.cart-empty-state h4{font-family:'Playfair Display',serif;color:var(--head)}
+.cart-empty-state p{font-size:.83rem;color:var(--text-lt)}
+.cart-ft{padding:18px;border-top:1px solid var(--gold-pale)}
+.cart-subtotal-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cart-subtotal-row span{font-size:.83rem;color:var(--text-md)}
+.cart-subtotal-row b{font-size:1.05rem;font-weight:700;color:var(--head)}
+.checkout-btn{width:100%;padding:14px;background:var(--olive);color:var(--on-olive);border-radius:var(--r-xl);font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:var(--ease)}
+.checkout-btn:hover{background:var(--olive-dk);box-shadow:0 6px 18px rgba(74,82,64,.28)}
+
+/* ═══════════════════════════════════════════════════════════
+   QUICK VIEW MODAL
+═══════════════════════════════════════════════════════════ */
+.modal-bg{position:fixed;inset:0;background:rgba(14,9,4,.7);z-index:9880;opacity:0;pointer-events:none;transition:opacity .3s;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{opacity:1;pointer-events:all}
+.qv-modal{
+  background:var(--white);border-radius:var(--r-lg);max-width:760px;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;overflow:hidden;
+  box-shadow:0 28px 72px rgba(42,36,22,.24);
+  transform:scale(.95) translateY(18px);
+  transition:transform .32s cubic-bezier(.25,.46,.45,.94);max-height:90vh;
+}
+.modal-bg.open .qv-modal{transform:scale(1) translateY(0)}
+.qv-img{width:100%;min-height:360px;object-fit:cover;background:var(--cream-d);display:flex;align-items:center;justify-content:center;font-size:4rem}
+.qv-body{padding:34px;overflow-y:auto}
+.qv-cat{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-lt);margin-bottom:5px}
+.qv-name{font-size:1.55rem;color:var(--head);margin-bottom:7px}
+.qv-price{font-size:1.15rem;font-weight:700;color:var(--accent-tx);margin-bottom:11px}
+.qv-desc{font-size:.83rem;color:var(--text-md);line-height:1.8;margin-bottom:18px}
+.qv-qty-row{display:flex;align-items:center;gap:15px;margin-bottom:18px}
+.qv-qty-row label{font-size:.76rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-md)}
+.qv-add{
+  width:100%;padding:13px;background:var(--olive);color:var(--on-olive);
+  border-radius:var(--r-xl);font-size:.8rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:var(--ease);
+}
+.qv-add:hover{background:var(--olive-dk);box-shadow:0 5px 18px rgba(74,82,64,.24)}
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════ */
+.toast{
+  position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(18px);
+  background:var(--olive-dk);color:var(--on-olive);
+  padding:11px 22px;border-radius:var(--r-xl);
+  font-size:.8rem;font-weight:500;letter-spacing:.02em;
+  box-shadow:0 7px 22px rgba(42,36,22,.25);
+  z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════ */
+@media(max-width:1100px){
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+
+/* ── Tablet / large phone (≤900px) ───────────────────────── */
+@media(max-width:900px){
+  .container{padding:0 20px}
+  .nav-links{display:none}
+  .nav-search-pill .pill-text{display:none}
+  .burger{display:flex}
+  .hero-grid{grid-template-columns:1fr;text-align:center;padding:56px 20px 48px;gap:40px}
+  .hero-visual{margin-top:8px;order:-1}
+  .hero-img-wrap{max-width:320px;margin:0 auto}
+  .hero-desc{margin-left:auto;margin-right:auto}
+  .hero-ctas{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-searchbar{max-width:100%;margin-left:auto;margin-right:auto}
+  .about-grid{grid-template-columns:1fr}
+  .about-mosaic{display:none}
+  .testi-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .gso-results{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+}
+
+/* ── Mobile phones (≤680px) ──────────────────────────────── */
+@media(max-width:680px){
+  html{font-size:15px}
+  .container{padding:0 18px}
+
+  /* Navbar */
+  .nav-inner{height:62px;padding:0 16px}
+  .nav-logo .logo-word{font-size:1.6rem}
+  .nav-logo .logo-sub{font-size:.52rem}
+  .nav-right{gap:6px}
+  .nav-search-pill{padding:8px}
+  .mob-nav{top:62px}
+
+  /* Hero */
+  .hero{padding-top:62px;min-height:auto}
+  .hero-grid{padding:38px 18px 40px;gap:32px}
+  .hero-eyebrow{font-size:.64rem;justify-content:center}
+  .hero-title{font-size:clamp(2.05rem,8vw,2.6rem);margin-bottom:14px}
+  .hero-desc{font-size:.95rem;line-height:1.75;margin-bottom:20px}
+  .hero-searchbar{padding:5px 5px 5px 16px}
+  .hero-search-hint{font-size:.8rem}
+  .hero-search-go{padding:9px 16px;font-size:.66rem}
+  .hero-ctas{gap:10px;width:100%}
+  .hero-ctas .btn-primary,.hero-ctas .btn-outline{flex:1;justify-content:center;white-space:nowrap;padding:13px 14px}
+  .hero-stats{flex-direction:row;gap:0;justify-content:space-around;width:100%}
+  .stat-num{font-size:1.4rem}
+  .stat-lbl{font-size:.6rem}
+  .hero-img-wrap{max-width:230px}
+
+  /* Marquee */
+  .marquee-track span{font-size:.62rem;padding:0 18px;gap:18px}
+
+  /* Collections */
+  .collections-sec{padding:48px 0 36px}
+  .cat-row{gap:11px}
+  .cat-card{flex:0 0 128px}
+  .cat-img-wrap{height:128px}
+  .cat-ph span{font-size:1.8rem}
+  .cat-foot{padding:10px 8px}
+  .cat-foot-name{font-size:.8rem}
+  .cat-foot-count{font-size:.62rem}
+
+  /* Shop */
+  .shop-sec{padding:44px 0}
+  .shop-toolbar{gap:10px}
+  .filter-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;margin:0 -18px;padding-left:18px;padding-right:18px;width:calc(100% + 36px)}
+  .filter-tabs::-webkit-scrollbar{display:none}
+  .ftab{white-space:nowrap;padding:8px 16px;font-size:.7rem;flex-shrink:0}
+  .search-trigger{padding:9px 14px;font-size:.72rem}
+  .prod-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .pcard-body{padding:11px 12px 14px}
+  .pcard-name{font-size:.82rem;margin-bottom:5px}
+  .pcard-cat{font-size:.58rem}
+  .pcard-price{font-size:.82rem}
+  .pcard-price s{font-size:.68rem}
+  .pwish{opacity:1;transform:translateY(0);width:29px;height:29px;top:9px;right:9px;font-size:.8rem}
+  .pbadge{top:9px;left:9px;padding:3px 8px;font-size:.55rem}
+  .pqv{display:none}
+  .padd{padding:9px;font-size:.68rem}
+
+  /* About */
+  .about-sec{padding:52px 0}
+  .about-content h2{font-size:clamp(1.5rem,6vw,2rem)}
+  .about-content p{font-size:.83rem}
+  .about-feats{gap:11px;margin:18px 0}
+  .about-actions{justify-content:center}
+  .about-actions .btn-primary,.about-actions .search-trigger-dk{flex:1;justify-content:center}
+
+  /* Testimonials */
+  .testi-sec{padding:52px 0}
+  .testi-grid{grid-template-columns:1fr}
+  .tcard{padding:22px}
+
+  /* FAQ */
+  .faq-sec{padding:48px 0}
+  .faq-q{padding:16px 18px;font-size:.85rem}
+  .faq-a{padding:0 18px}
+  .faq-item.open .faq-a{padding:0 18px 16px}
+
+  /* Contact */
+  .contact-sec{padding:52px 0}
+  .cform{padding:22px}
+  .contact-detail{font-size:.82rem}
+
+  /* Newsletter */
+  .nl-sec{padding:52px 0}
+  .nl-inner p{font-size:.83rem}
+  .nl-form{flex-direction:column}
+
+  /* Footer */
+  footer{padding:48px 0 0}
+  .foot-grid{grid-template-columns:1fr;gap:30px;text-align:center}
+  .foot-tagline{max-width:100%;margin-left:auto;margin-right:auto}
+  .foot-socials{justify-content:center}
+  .foot-col ul{align-items:center}
+  .fc-detail{justify-content:center;text-align:left;max-width:280px;margin-left:auto;margin-right:auto}
+  .foot-bottom{flex-direction:column;text-align:center;padding:16px 18px}
+
+  /* Cart drawer */
+  .cart-drawer{width:100%;max-width:100vw}
+  .ci-img{width:60px;height:74px}
+
+  /* Quick view modal */
+  .qv-modal{grid-template-columns:1fr;grid-template-rows:auto 1fr;max-height:92vh}
+  .qv-img{min-height:220px}
+  .qv-body{padding:22px;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .qv-name{font-size:1.25rem}
+  .qv-price{font-size:1.02rem}
+
+  /* Toast */
+  .toast{max-width:88vw;white-space:normal;text-align:center;font-size:.76rem;bottom:80px;padding:10px 18px}
+
+  /* Search overlay */
+  .gso-head,.gso-input-row,.gso-meta,.gso-results,.gso-popular{padding-left:18px;padding-right:18px}
+  .gso-brand{font-size:1.1rem}
+  .gso-input{font-size:1.1rem;padding:14px 14px 14px 44px}
+  .gso-input-row svg{left:32px}
+  .gso-results{grid-template-columns:repeat(2,1fr);gap:10px}
+
+  .form-row{grid-template-columns:1fr}
+}
+
+/* ── Small phones (≤420px) ───────────────────────────────── */
+@media(max-width:420px){
+  .container{padding:0 14px}
+  .nav-logo .logo-word{font-size:1.45rem}
+  .nav-logo .logo-sub{font-size:.48rem;letter-spacing:.26em}
+  .hero-grid{padding:32px 14px 34px}
+  .hero-title{font-size:clamp(1.85rem,8.5vw,2.2rem)}
+  .hero-img-wrap{max-width:190px}
+  .hero-stats{flex-wrap:wrap;row-gap:14px}
+  .prod-grid{grid-template-columns:repeat(2,1fr);gap:9px}
+  .pcard-name{font-size:.76rem}
+  .cat-card{flex:0 0 112px}
+  .cat-img-wrap{height:112px}
+  .gso-results{grid-template-columns:1fr 1fr}
+  #stt{width:40px;height:40px;bottom:18px;right:18px;font-size:.95rem}
+}
+
+/* ── Very small phones (≤360px) ──────────────────────────── */
+@media(max-width:360px){
+  .prod-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .pcard-body{padding:9px 9px 12px}
+  .pcard-name{font-size:.72rem}
+  .stars{font-size:.6rem}
+  .hero-ctas{flex-direction:column}
+  .hero-ctas .btn-primary,.hero-ctas .btn-outline{width:100%}
+}
+
+
+/* Keep native controls + autofill in the brown theme */
+input,textarea,button,select{color-scheme:only light}
+input:-webkit-autofill,textarea:-webkit-autofill{
+  -webkit-text-fill-color:var(--text-dk);
+  -webkit-box-shadow:0 0 0 1000px var(--cream-d) inset;
+  caret-color:var(--text-dk);
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     GLOBAL SEARCH OVERLAY
+═══════════════════════════════════════════════════════════ -->
+<div class="gso" id="gso" role="dialog" aria-modal="true" aria-label="Search products">
+
+  <!-- Header -->
+  <div class="gso-head">
+    <a href="#home" class="nav-logo" onclick="closeGSO()" aria-label="Bunaii Store.in – home"><span class="logo-word">Bunaii</span><span class="logo-sub"><i>✦</i>Store.in<i>✦</i></span></a>
+    <button class="gso-close" onclick="closeGSO()" aria-label="Close search">✕</button>
+  </div>
+
+  <!-- Input -->
+  <div class="gso-input-row">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input class="gso-input" id="gsoInput" type="text"
+      placeholder="Search bags, bouquets, plushies, keychains…"
+      autocomplete="off" spellcheck="false" aria-label="Search">
+  </div>
+
+  <!-- Meta: count + category pills -->
+  <div class="gso-meta">
+    <span class="gso-count" id="gsoCount">Showing all products</span>
+    <div class="gso-pills" id="gsoPills">
+      <button class="gso-pill active" data-cat="all">All</button>
+      <!-- other pills are generated from COLLECTIONS in the script -->
+    </div>
+  </div>
+
+  <!-- Popular searches (visible when no query) -->
+  <div class="gso-popular" id="gsoPop">
+    <span class="gso-pop-label">Popular Searches</span>
+    <div class="gso-tags">
+      <span class="gso-tag" onclick="setGSOQuery('Tote Bag')">Tote Bag</span>
+      <span class="gso-tag" onclick="setGSOQuery('Sling Bag')">Sling Bag</span>
+      <span class="gso-tag" onclick="setGSOQuery('Bouquet')">Bouquet</span>
+      <span class="gso-tag" onclick="setGSOQuery('Sunflower')">Sunflower</span>
+      <span class="gso-tag" onclick="setGSOQuery('Keychain')">Keychain</span>
+      <span class="gso-tag" onclick="setGSOQuery('Plushie')">Plushie</span>
+      <span class="gso-tag" onclick="setGSOQuery('Flower Pot')">Flower Pot</span>
+      <span class="gso-tag" onclick="setGSOQuery('Heart')">Heart Bag</span>
+      <span class="gso-tag" onclick="setGSOQuery('Lily')">Lily</span>
+      <span class="gso-tag" onclick="setGSOQuery('Granny Square')">Granny Square</span>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="gso-results" id="gsoResults" role="list"></div>
+
+</div><!-- /gso -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════════════ -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+
+    <!-- Logo -->
+    <a href="#home" class="nav-logo" aria-label="Bunaii Store.in – home"><span class="logo-word">Bunaii</span><span class="logo-sub"><i>✦</i>Store.in<i>✦</i></span></a>
+
+    <!-- Desktop links -->
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#collections">Collections</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <!-- Right actions -->
+    <div class="nav-right">
+      <button class="nav-search-pill" onclick="openGSO()" aria-label="Search">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <span class="pill-text">Search products…</span>
+      </button>
+
+      <button class="cart-icon" onclick="toggleCart()" aria-label="Shopping cart">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+
+      <button class="burger" id="burger" onclick="toggleMobNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile nav drawer -->
+<div class="mob-nav" id="mobNav">
+  <div class="mob-search-row" onclick="openGSO();toggleMobNav()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <span>Search all products…</span>
+  </div>
+  <a href="#home"        onclick="toggleMobNav()">Home</a>
+  <a href="#shop"        onclick="toggleMobNav()">Shop</a>
+  <a href="#collections" onclick="toggleMobNav()">Collections</a>
+  <a href="#about"       onclick="toggleMobNav()">About</a>
+  <a href="#contact"     onclick="toggleMobNav()">Contact</a>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO  #home
+═══════════════════════════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-grid">
+
+    <!-- Left content -->
+    <div class="hero-content fu">
+      <div class="hero-eyebrow">New Collection 2027</div>
+      <h1 class="hero-title">
+        Where <em>Craft</em><br>Meets <em>Elegance</em>
+      </h1>
+      <p class="hero-desc">
+        <strong>Each Bunaii piece</strong> is lovingly handcrafted stitch by stitch — Unique crochet bags, everlasting bouquets and thoughtful handmade gifts.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#shop" class="btn-primary">
+          Shop Collection
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="m5 12 14 0M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="#about" class="btn-outline">Our Story</a>
+      </div>
+
+      <div class="hero-stats">
+        <div><div class="stat-num">2.4k+</div><div class="stat-lbl">Happy Customers</div></div>
+        <div><div class="stat-num">100%</div><div class="stat-lbl">Handcrafted</div></div>
+        <div><div class="stat-num">Made</div><div class="stat-lbl">with Love in India</div></div>
+      </div>
+    </div>
+
+    <!-- Right visual -->
+    <div class="hero-visual fu d2">
+      <div class="hero-img-wrap">
+        <!-- HERO SLIDESHOW
+             To add real images: replace the .hero-slide-ph divs with
+             <img src="your-image.jpg" alt="description"> inside each .hero-slide
+             To add more slides: copy a .hero-slide block and add a matching dot
+        -->
+        <div class="hero-slideshow" id="heroSlideshow">
+          <div class="hero-slide active"><img src="White%20Daisy%20bag.webp" alt="White Daisy Tote Bag" fetchpriority="high" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="granny%20square%20bag.webp" alt="Granny Square Crochet Sling Bag" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="Heart%20bag.webp" alt="Heart Granny Crochet Sling Bag" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="sling%20granny%20bag.webp" alt="Sling Granny Square Bag" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="Golden%20Sunflower%20Duo.webp" alt="Golden Sunflower Duo Bouquet" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="Ruby%20bloom%20bouquet.webp" alt="Ruby Bloom Bouquet" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="Surajmukhi%20Bouquet.webp" alt="Surajmukhi Bouquet" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="Pink%20Whisper%20Bunch%202.webp" alt="Pink Whisper Bunch" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="Aurora%20bloom%20bouquet.webp" alt="Aurora Bloom Bouquet" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="pink%20bouquet.webp" alt="Lily Bouquet" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide"><img data-src="yellow%20bouquet.webp" alt="Yellow Bouquet" loading="lazy" decoding="async" onerror="this.closest('.hero-slide').innerHTML='<div class=&quot;hero-slide-ph&quot;><span>🧶</span><p>Image not found</p></div>'"></div>
+          <div class="hero-slide-dots" id="heroSlideDots">
+            <div class="hero-dot active" onclick="goToSlide(0)"></div>
+            <div class="hero-dot" onclick="goToSlide(1)"></div>
+            <div class="hero-dot" onclick="goToSlide(2)"></div>
+            <div class="hero-dot" onclick="goToSlide(3)"></div>
+            <div class="hero-dot" onclick="goToSlide(4)"></div>
+            <div class="hero-dot" onclick="goToSlide(5)"></div>
+            <div class="hero-dot" onclick="goToSlide(6)"></div>
+            <div class="hero-dot" onclick="goToSlide(7)"></div>
+            <div class="hero-dot" onclick="goToSlide(8)"></div>
+            <div class="hero-dot" onclick="goToSlide(9)"></div>
+            <div class="hero-dot" onclick="goToSlide(10)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PROMO BANNERS (swipeable — Forever Flowers ⇄ Best Seller)
+     Images: front_page_1.png (Forever Flowers)
+             front_page_2.png (Best Seller)
+     Upload both .png files to the same folder as this index.html
+═══════════════════════════════════════════════════════════ -->
+<div class="promo-banners" id="promoBanners">
+  <div class="promo-track" id="promoTrack">
+    <div class="promo-banner">
+      <picture>
+        <source srcset="front_page_1.webp" type="image/webp">
+        <img src="front_page_1.jpg"
+             alt="Forever Flowers — New collection, perfect for gifting. Handmade with love."
+             loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="promo-banner">
+      <picture>
+        <source srcset="front_page_2.webp" type="image/webp">
+        <img src="front_page_2.jpg"
+             alt="Best Seller — Our top-selling crochet bags, bouquets and keychains."
+             loading="lazy" decoding="async">
+      </picture>
+    </div>
+  </div>
+  <div class="promo-dots">
+    <div class="promo-dot active" onclick="goToPromoSlide(0)" aria-label="Forever Flowers"></div>
+    <div class="promo-dot" onclick="goToPromoSlide(1)" aria-label="Best Seller"></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     MARQUEE TAPE
+═══════════════════════════════════════════════════════════ -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Handcrafted with Love</span>
+    <span>Artisan Quality</span>
+    <span>Made in India</span>
+    <span>Crochet Couture</span>
+    <span>Warm &amp; Organic</span>
+    <span>Stitch by Stitch</span>
+    <span>Handcrafted with Love</span>
+    <span>Artisan Quality</span>
+    <span>Made in India</span>
+    <span>Crochet Couture</span>
+    <span>Warm &amp; Organic</span>
+    <span>Stitch by Stitch</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     COLLECTIONS  #collections
+═══════════════════════════════════════════════════════════ -->
+<section class="collections-sec" id="collections">
+  <div class="container">
+
+    <div class="collections-head fu">
+      <div class="sec-label">Browse By Category</div>
+      <h2 class="sec-heading">Shop Collections</h2>
+      <p class="sec-sub">Explore our curated categories of premium handmade crochet creations</p>
+    </div>
+
+    <div class="cat-row fu d1" id="catRow"><!-- cards generated from COLLECTIONS in the script --></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHOP  #shop
+═══════════════════════════════════════════════════════════ -->
+<section class="shop-sec" id="shop">
+  <div class="container">
+
+    <div class="fu" style="margin-bottom:28px;">
+      <div class="sec-label">Handpicked for You</div>
+      <h2 class="sec-heading">Featured Products</h2>
+    </div>
+
+    <!-- Toolbar: filter tabs + search trigger -->
+    <div class="shop-toolbar fu d1">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="ftab active" data-cat="all" onclick="filterProducts('all')">All</button>
+        <!-- other tabs are generated from COLLECTIONS in the script -->
+      </div>
+      <button class="search-trigger" onclick="openGSO()" style="flex-shrink:0;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <span>Search</span>
+      </button>
+    </div>
+
+    <!-- Products rendered by JS -->
+    <div class="prod-grid" id="prodGrid"></div>
+
+    <div class="load-more-row fu" id="loadMoreRow">
+      <button class="btn-outline" id="loadMoreBtn" onclick="loadMore()">Load More</button>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Thread divider -->
+<div class="container" aria-hidden="true">
+  <div class="thread-div"><div class="thread-div-icon">🧶</div></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ABOUT  #about
+═══════════════════════════════════════════════════════════ -->
+<section class="about-sec" id="about">
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- Content -->
+      <div class="about-content fu d2" style="grid-column:1/-1;max-width:700px;margin:0 auto;text-align:center;">
+        <div class="sec-label about-label">Our Story</div>
+        <h2>Made with Love,<br>Especially for You</h2>
+        <p>"Bunaii Store.in" is not just a brand, it's a journey that started from a small place with one dream and one person. Today, we are a family of 50+ women artisans connected with hope, trust, and confidence.</p>
+        <p>Every order means a lot to us because handmade products carry not only hard work, but also love in every thread. That's why each Bunaii piece is carefully made with love, specially for you.</p>
+
+        <div class="about-feats">
+          <div class="feat-row">
+            <div class="feat-icon">🌿</div>
+            <div class="feat-text"><b>Sustainably Sourced</b><span>Quality yarn*</span></div>
+          </div>
+          <div class="feat-row">
+            <div class="feat-icon">✋</div>
+            <div class="feat-text"><b>100% Handcrafted</b><span>Every piece made by skilled Indian artisans</span></div>
+          </div>
+          <div class="feat-row">
+            <div class="feat-icon">💌</div>
+            <div class="feat-text"><b>Made with Intention</b><span>Each design tells a unique story</span></div>
+          </div>
+        </div>
+
+        <div class="about-actions">
+          <a href="#shop" class="btn-primary">Explore Collection</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     TESTIMONIALS
+═══════════════════════════════════════════════════════════ -->
+<section class="testi-sec">
+  <div class="container">
+    <div class="testi-head fu">
+      <div class="sec-label">Customer Love</div>
+      <h2 class="sec-heading">What They're Saying</h2>
+      <p class="sec-sub" style="margin:6px auto 0;text-align:center;">Real words from our beautiful community</p>
+    </div>
+
+    <div class="testi-grid fu d1">
+
+      <div class="tcard">
+        <p class="tcard-text">Absolutely loved this sunflower bouquet 🌻 The finishing, quality, and detailing are so beautiful and natural. It looks even prettier in real life. Also, the team response and service were quick and very cooperative. Highly recommended ✨</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">🙂</div>
+          <div>
+            <div class="tcard-name">Pratik</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard">
+        <p class="tcard-text">Loved the crochet gajra I ordered! Beautifully handmade, lightweight, and perfect for traditional wear. The quality was amazing and delivery was quick too. Highly recommended</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">😊</div>
+          <div>
+            <div class="tcard-name">Divya</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard">
+        <p class="tcard-text">I ordered a customized bouquet and honestly, it turned out even better than my expectations. Really happy with the service! 🌷❤️</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">😍</div>
+          <div>
+            <div class="tcard-name">Sonu</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FAQ
+═══════════════════════════════════════════════════════════ -->
+<section class="faq-sec" id="faq">
+  <div class="container">
+    <div class="faq-head fu">
+      <div class="sec-label">Have Questions?</div>
+      <h2 class="sec-heading">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-list fu d1">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFAQ(this)">
+          Are Bunaii products completely handmade?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Yes. Every Bunaii creation is carefully handcrafted by skilled women artisans using premium yarns and materials. Each piece is made with love and attention to detail, making every item truly unique.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFAQ(this)">
+          How long does delivery take?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Within India, deliveries usually take 6 to 8 business days. We ship to many international locations too — shipping time and charges may vary depending on your country. You'll receive a tracking link once your order is dispatched.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFAQ(this)">
+          Do you accept custom orders?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Absolutely! We love bringing your ideas to life. Share your vision with us via our contact form or reach out on Instagram @bunaiistore.in. Our artisans will create something beautiful and personal, just for you.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFAQ(this)">
+          What is your shipping process?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">We carefully handcraft each product to ensure the highest quality. Ready-to-ship orders are dispatched within 2–5 business days. Custom and personalized orders may require 5–10 business days for production. Delivery times vary depending on location and courier service. Tracking information will be provided once your order has been shipped.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFAQ(this)">
+          What is your returns and exchanges policy?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">As our products are handmade and often custom-made, we do not accept returns or exchanges. However, if you receive a damaged or incorrect item, please contact us within 48 hours of delivery with clear photos of the issue. Approved cases will be eligible for a replacement.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFAQ(this)">
+          Can I place a bulk or gifting order?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Yes! Bulk and gifting orders are very welcome. We offer custom colors, designs, bouquets, hampers, and personalized creations. Production time may vary depending on design complexity and order quantity. Advance payment may be required for custom orders.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFAQ(this)">
+          How do I care for my crochet pieces?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">To keep your handmade crochet creations looking beautiful: keep away from excessive moisture and direct sunlight; dust gently with a soft, dry cloth when needed; hand wash only if necessary — do not machine wash; store in a clean, dry place to maintain shape and quality; and handle with care to ensure long-lasting beauty.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     CONTACT  #contact
+═══════════════════════════════════════════════════════════ -->
+<section class="contact-sec" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Left info -->
+      <div class="fu">
+        <div class="sec-label">Get in Touch</div>
+        <h2 class="sec-heading">Let's Create Something<br>Beautiful Together</h2>
+        <p>Have a custom order request, a question about a product, or just want to say hello? Every message is personally read by our team.</p>
+
+        <div class="contact-detail"><span class="c-icon">✉️</span><a href="mailto:bunaiistore@gmail.com" style="color:inherit">bunaiistore@gmail.com</a></div>
+        <div class="contact-detail"><span class="c-icon">📞</span><a href="tel:+919244277935" style="color:inherit">+91 92442 77935</a></div>
+        <div class="contact-detail"><span class="c-icon">📱</span><span>@bunaiistore.in on Instagram</span></div>
+        <div class="contact-detail"><span class="c-icon">📍</span><span>Handcrafted with love in India, shipped worldwide</span></div>
+        <div class="contact-detail"><span class="c-icon">⏰</span><span>Mon–Sat, 10 am – 6 pm IST</span></div>
+      </div>
+
+      <!-- Right form -->
+      <div class="cform fu d2">
+        <h3>Send Us a Message</h3>
+        <form name="contact" method="POST" action="https://formsubmit.co/bunaiistore@gmail.com" id="contactForm">
+          <!-- FormSubmit (free): emails every message to bunaiistore@gmail.com -->
+          <input type="hidden" name="_subject" value="New message from Bunaii Store website">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+          <div class="form-row">
+            <div class="fgrp"><label>First Name</label><input type="text" name="firstName" class="finput" placeholder="Priya" required></div>
+            <div class="fgrp"><label>Last Name</label><input type="text" name="lastName" class="finput" placeholder="Sharma" required></div>
+          </div>
+          <div class="fgrp"><label>Email Address</label><input type="email" name="email" class="finput" placeholder="priya@example.com" required></div>
+          <div class="fgrp"><label>Subject</label><input type="text" name="subject" class="finput" placeholder="Custom order enquiry"></div>
+          <div class="fgrp"><label>Message</label><textarea name="message" class="finput" placeholder="Tell us what you're looking for…" required></textarea></div>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+            Send Message
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="m5 12 14 0M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     NEWSLETTER
+═══════════════════════════════════════════════════════════ -->
+<section class="nl-sec">
+  <div class="nl-inner fu">
+    <div class="sec-label" style="justify-content:center;margin-bottom:12px;">Stay Connected</div>
+    <h2>Join the Bunaii Circle</h2>
+    <p>Be the first to discover new collections, behind-the-scenes crafting stories, and exclusive member offers.</p>
+    <div class="nl-form">
+      <input type="email" id="nlEmail" placeholder="Your email address">
+      <button class="btn-primary" onclick="subscribeNL()">Subscribe</button>
+    </div>
+    <p class="nl-note">✦ No spam, ever. Unsubscribe anytime. ✦</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+
+      <div>
+        <a href="#home" class="nav-logo" aria-label="Bunaii Store.in – home"><span class="logo-word">Bunaii</span><span class="logo-sub"><i>✦</i>Store.in<i>✦</i></span></a>
+        <p class="foot-tagline">Where ancient Indian craft meets modern elegance. Every stitch a story. Every piece a treasure.</p>
+        <div class="foot-socials">
+          <a href="https://www.instagram.com/bunaiistore.in/" target="_blank" rel="noopener" class="fsoc" aria-label="Instagram">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+          <a href="#" class="fsoc" aria-label="Pinterest">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.19-.77 1.26-5.35 1.26-5.35s-.32-.65-.32-1.6c0-1.5.87-2.62 1.95-2.62.92 0 1.37.69 1.37 1.52 0 .93-.59 2.32-.9 3.6-.25 1.08.54 1.96 1.6 1.96 1.92 0 3.4-2.02 3.4-4.94 0-2.58-1.86-4.39-4.51-4.39-3.07 0-4.87 2.3-4.87 4.68 0 .93.36 1.92.8 2.46.09.11.1.2.07.31-.08.33-.26 1.08-.3 1.23-.05.2-.16.24-.38.14-1.39-.65-2.26-2.7-2.26-4.34 0-3.53 2.57-6.78 7.4-6.78 3.88 0 6.9 2.77 6.9 6.47 0 3.86-2.43 6.97-5.8 6.97-1.13 0-2.2-.59-2.57-1.28l-.7 2.6c-.25.97-.93 2.18-1.39 2.92.05.01.1.02.15.02z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#shop">Shop All</a></li>
+          <li><a href="#collections">Collections</a></li>
+          <li><a href="#about">Our Story</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Customer Care</h4>
+        <ul>
+          <li><a href="shipping.html">Shipping Info</a></li>
+          <li><a href="returns.html">Returns &amp; Exchanges</a></li>
+          <li><a href="custom-orders.html">Custom Orders</a></li>
+          <li><a href="care.html">Care Instructions</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Get in Touch</h4>
+        <div class="fc-detail"><span class="fc-icon">✉</span><a href="mailto:bunaiistore@gmail.com" style="color:inherit">bunaiistore@gmail.com</a></div>
+        <div class="fc-detail"><span class="fc-icon">📱</span><span>@bunaiistore.in</span></div>
+        <div class="fc-detail"><span class="fc-icon">📍</span><span>India — Shipping Worldwide</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="foot-bottom">
+    <div class="foot-copy">© 2025 Bunaii Store. All rights reserved. Made with 🧶 &amp; ❤️ in India</div>
+    <div class="pay-icons">
+      <span class="picon">UPI</span>
+      <span class="picon">VISA</span>
+      <span class="picon">MC</span>
+      <span class="picon">PayPal</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     CART DRAWER
+═══════════════════════════════════════════════════════════ -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-label="Shopping cart">
+  <div class="cart-hd">
+    <h3>Your Basket</h3>
+    <button class="cart-x" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items-wrap" id="cartItems"></div>
+  <div class="cart-ft" id="cartFt" style="display:none;">
+    <div class="cart-subtotal-row">
+      <span>Subtotal</span>
+      <b id="cartTotal">₹0</b>
+    </div>
+    <button class="checkout-btn" onclick="toast('Checkout coming soon! 🛍️')">Proceed to Checkout</button>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     QUICK VIEW MODAL
+═══════════════════════════════════════════════════════════ -->
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)" role="dialog" aria-modal="true">
+  <div class="qv-modal" id="qvModal">
+    <!-- Image / placeholder rendered by JS -->
+    <div id="qvImgWrap"></div>
+    <div class="qv-body">
+      <div class="qv-cat"  id="qvCat"></div>
+      <h2 class="qv-name" id="qvName"></h2>
+      <div class="qv-price" id="qvPrice"></div>
+      <p class="qv-desc"   id="qvDesc"></p>
+      <div class="qv-qty-row">
+        <label>Qty</label>
+        <div class="qctrl">
+          <button class="qb" onclick="changeModalQty(-1)">−</button>
+          <span class="qn" id="qvQty">1</span>
+          <button class="qb" onclick="changeModalQty(1)">+</button>
+        </div>
+      </div>
+      <button class="qv-add" onclick="addFromModal()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Scroll to top -->
+<button id="stt" onclick="scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<!-- Toast -->
+<div class="toast" id="toastEl" role="alert" aria-live="polite"></div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ─────────────────────────────────────────────
+   PRODUCT DATA
+   To add a real product, push an object into
+   this array with:
+     id, name, category, price, originalPrice,
+     badge, rating, desc, img
+   Leave img:"" to show the emoji placeholder.
+   badge: "new" | "sale" | "bestseller" | null
+   category: any key from COLLECTIONS below (e.g. "bags", "keychain", "hair", "bunches", "toys",
+                "pipecleaner", "plushies", "pillow", "warmwear"). "Under 700" is automatic (price < 700).
+──────────────────────────────────────────────── */
+const PRODUCTS = [
+  /* ── BAGS ────────────────────────────────── */
+  {
+    id:1, name:"White Daisy Tote Bag", category:"bags",
+    price:1200, originalPrice:null, badge:"bestseller", rating:5,
+    desc:"Bright, cheerful, and handcrafted with love, this Sunflower Crochet Tote Bag is designed to add a unique handmade touch to your everyday style. Made using premium acrylic yarn, the bag features beautiful sunflower granny square motifs with a clean white base. The interior is fully lined with fabric, making it more durable, secure, and suitable for daily use. Each piece is carefully handmade, making every bag one of a kind. Material: Premium Acrylic Yarn with soft fabric inner lining. Pattern: Sunflower Granny Squares in White, Yellow & Brown. Strong handmade crochet shoulder straps. Perfect for everyday use, casual outings, shopping, college, beach trips and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. As each bag is handmade, slight variations in size and stitching may occur, making every piece unique.",
+    img:"White Daisy bag.jpg"
+  },
+  {
+    id:2, name:"Granny Square Crochet Sling Bag", category:"bags",
+    price:799, originalPrice:null, badge:"new", rating:5,
+    desc:"Minimal, elegant, and handcrafted with care, this Granny Square Crochet Sling Bag is perfect for adding a handmade charm to your everyday outfits. Made from premium acrylic yarn, it features a classic granny square design in a beautiful cream and purple color combination. The bag is fully lined with soft fabric on the inside, making it durable, sturdy, and ideal for daily essentials. Every bag is individually handcrafted, making each piece unique. Long handmade crochet shoulder strap, lightweight and comfortable to carry. Perfect for everyday use, casual outings, college, shopping, travel and thoughtful handmade gifts. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece truly one of a kind.",
+    img:"granny square bag.jpg"
+  },
+  {
+    id:3, name:"Heart Granny Crochet Sling Bag", category:"bags",
+    price:799, originalPrice:null, badge:null, rating:5,
+    desc:"Cute, timeless, and handcrafted with love, this Heart Granny Crochet Sling Bag is the perfect blend of style and functionality. Made with premium acrylic yarn, it features charming heart granny square motifs that add a unique handmade touch to your everyday look. The bag is fully lined with soft fabric on the inside, providing extra durability and a neat finish. Carefully handcrafted by skilled women artisans, every bag is unique and made with attention to detail. Long handmade crochet shoulder strap, lightweight and comfortable to carry. Perfect for everyday use, casual outings, college, shopping, travel and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece one of a kind.",
+    img:"Heart bag.jpg"
+  },
+  {
+    id:4, name:"Sling Granny Square Bag", category:"bags",
+    price:550, originalPrice:null, badge:"sale", rating:4,
+    desc:"Simple, stylish, and handcrafted with care, this Classic Granny Square Crochet Sling Bag is perfect for everyday use. Made from premium acrylic yarn, it features a vibrant multicolor granny square on a sleek black base, giving it a timeless handmade look. The bag is lined with soft fabric on the inside for added durability, strength, and a neat finish. Each bag is individually handcrafted by skilled women artisans, making every piece unique. Color: Black with Blue, Yellow & Cream Accents. Long handmade crochet shoulder strap. Perfect for everyday use, casual outings, college, shopping, travel and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece truly one of a kind.",
+    img:"sling granny bag.jpg"
+  },
+
+  /* ── PLUSHIES ─────────────────────────────── */
+  {
+    id:5, name:"Crochet Plushie", category:"plushies",
+    price:0, originalPrice:null, badge:"new", rating:5,
+    desc:"Soft, huggable, and handcrafted with love — our crochet plushies are made using premium acrylic yarn for a plush, durable finish. Each plushie is 100% handcrafted by skilled women artisans, making every piece one of a kind. Perfect for gifting, nursery decor, or as a sweet desk companion. Care: Keep away from excessive moisture, dust gently with a soft dry cloth, hand wash only if necessary, store in a clean dry place.",
+    img:""
+  },
+
+  /* ── KEYCHAINS ────────────────────────────── */
+  {
+    id:6, name:"Crochet Keychain", category:"keychain",
+    price:0, originalPrice:null, badge:"bestseller", rating:5,
+    desc:"Adorable handmade crochet keychains crafted with premium acrylic yarn, finished with a sturdy metal ring. A cute little detail for your bag, keys, or as a thoughtful small gift. 100% handcrafted by skilled women artisans, making every keychain unique. Care: Keep away from excessive moisture, dust gently with a soft dry cloth, store in a clean dry place.",
+    img:""
+  },
+
+  /* ── FLOWER POTS ──────────────────────────── */
+  {
+    id:7, name:"Crochet Flower Pot", category:"flowerpot",
+    price:0, originalPrice:null, badge:null, rating:5,
+    desc:"A charming handcrafted crochet flower arrangement potted for everlasting display. Made with premium acrylic yarn and carefully assembled by skilled artisans, this piece brings a pop of handmade color to any shelf, desk or windowsill — without the upkeep of real flowers. Reusable and long-lasting. Care: Keep away from excessive moisture and direct sunlight, dust gently with a soft dry cloth, store in a clean dry place.",
+    img:""
+  },
+
+  /* ── PREMIUM BOUQUET ──────────────────────── */
+  {
+    id:8, name:"Golden Sunflower Duo Bouquet", category:"bunches",
+    price:699, originalPrice:null, badge:"bestseller", rating:5,
+    desc:"A handcrafted bouquet featuring two beautiful crochet sunflowers, made with premium acrylic yarn and wrapped in elegant premium packaging. A timeless gift that brings warmth and happiness to every occasion. Premium Acrylic Yarn, Handmade, 2 Crochet Sunflowers, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+    img:"Golden Sunflower Duo.jpg"
+  },
+  {
+    id:9, name:"Ruby Bloom Bouquet", category:"bunches",
+    price:0, originalPrice:null, badge:"new", rating:5,
+    desc:"An elegant handcrafted crochet bouquet in rich ruby tones, made with premium acrylic yarn and finished with a beautiful gingham wrap. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+    img:"Ruby bloom bouquet.jpg"
+  },
+  {
+    id:10, name:"Surajmukhi Bouquet", category:"bunches",
+    price:0, originalPrice:null, badge:null, rating:5,
+    desc:"A cheerful handcrafted crochet sunflower bouquet (Surajmukhi), made with premium acrylic yarn and wrapped beautifully. A timeless gift that brings warmth and sunshine to every occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+    img:"Surajmukhi Bouquet.jpg"
+  },
+  {
+    id:11, name:"Pink Whisper Bunch", category:"bunches",
+    price:0, originalPrice:null, badge:null, rating:5,
+    desc:"A delicate handcrafted crochet lily bunch in soft pink hues, made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+    img:"Pink Whisper Bunch 2.jpg"
+  },
+  {
+    id:12, name:"Aurora Bloom Bouquet", category:"bunches",
+    price:0, originalPrice:null, badge:"new", rating:5,
+    desc:"A graceful handcrafted crochet bouquet featuring soft pastel blooms, made with premium acrylic yarn and wrapped in elegant premium packaging. A timeless gift that brings a touch of charm to every occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+    img:"Aurora bloom bouquet.jpg"
+  },
+
+  /* ── BOUQUET UNDER ₹799 ───────────────────── */
+  {
+    id:13, name:"Lily Bouquet", category:"bunches",
+    price:349, originalPrice:null, badge:"new", rating:5,
+    desc:"A handcrafted crochet lily made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+    img:"pink bouquet.jpg"
+  },
+  {
+    id:14, name:"Yellow Bouquet", category:"bunches",
+    price:399, originalPrice:null, badge:null, rating:5,
+    desc:"A handcrafted crochet lily made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+    img:"yellow bouquet.jpg"
+  },
+];
+
+/* ─────────────────────────────────────────────
+   COLLECTIONS  (single source of truth)
+   Drives the collection cards, shop filter tabs and
+   search pills. Order here = order on the site.
+   "match" = computed collection; otherwise a product
+   belongs to it when product.category === key.
+──────────────────────────────────────────────── */
+const COLLECTIONS = [
+  { key:'keychain',    label:'Keychains',        emoji:'🔑' },
+  { key:'under700',    label:'Under 700',        emoji:'🏷️', match: p => p.price > 0 && p.price < 700 },
+  { key:'warmwear',    label:'Warm wear',        emoji:'🧣' },
+  { key:'toys',        label:'Toys',             emoji:'🪀' },
+  { key:'plushies',    label:'Plushies',         emoji:'🧸' },
+  { key:'pillow',      label:'Pillow',           emoji:'🛏️' },
+  { key:'pipecleaner', label:'Pipe cleaner',     emoji:'🌸' },
+  { key:'hair',        label:'Hair Accessories', emoji:'🎀' },
+  { key:'bunches',     label:'Bunches',          emoji:'💐' },
+  { key:'premium',     label:'Premium Bouquets', emoji:'🌹' },
+  { key:'bags',        label:'Bags',             emoji:'👜' }
+];
+
+/* Labels/emoji for product.category values (flowerpot has no collection card but still shows in All) */
+const CAT_META = { flowerpot:{ label:'Flower Pot', emoji:'🪴' } };
+COLLECTIONS.forEach(c => { if (!c.match) CAT_META[c.key] = { label:c.label, emoji:c.emoji }; });
+const CAT_EMOJI = {};
+Object.keys(CAT_META).forEach(k => CAT_EMOJI[k] = CAT_META[k].emoji);
+function catLabel(key) { return (CAT_META[key] && CAT_META[key].label) || key; }
+
+function inCollection(p, key) {
+  if (key === 'all') return true;
+  const c = COLLECTIONS.find(x => x.key === key);
+  return c && c.match ? c.match(p) : p.category === key;
+}
+function productsIn(key) { return PRODUCTS.filter(p => inCollection(p, key)); }
+
+/* ─────────────────────────────────────────────
+   STATE
+──────────────────────────────────────────────── */
+let cart       = [];
+let wishlist   = new Set();
+let activeFilter   = 'all';
+let gsoActiveCat   = 'all';
+let modalProduct   = null;
+let modalQtyVal    = 1;
+
+/* ─────────────────────────────────────────────
+   HELPERS
+──────────────────────────────────────────────── */
+function priceStr(p) {
+  return p > 0 ? '₹' + p.toLocaleString('en-IN') : '—';
+}
+
+/* Encode spaces/special chars in image filenames so they resolve
+   correctly on all hosts (Netlify included) regardless of how the
+   file was uploaded. */
+function imgSrc(path) {
+  if (!path) return '';
+  /* Product photos are served as compressed .webp files (much smaller
+     than the original .jpg uploads) — swap the extension automatically
+     so the product data above doesn't need to change. */
+  const webpPath = path.replace(/\.(jpe?g|png)$/i, '.webp');
+  return encodeURI(webpPath);
+}
+
+function highlight(text, q) {
+  if (!q) return text;
+  const rx = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  return text.replace(rx, '<mark class="gso-hl">$1</mark>');
+}
+
+function cardImgHTML(p, cls) {
+  if (p.img) {
+    return `<img src="${imgSrc(p.img)}" alt="${p.name}" class="${cls}" loading="lazy" decoding="async">`;
+  }
+  return `<div class="${cls.includes('grc-img') ? 'pcard-ph' : 'pcard-ph'}" style="width:100%;height:100%;background:linear-gradient(145deg,var(--cream-d),var(--gold-pale));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+    <span style="font-size:2.8rem;">${CAT_EMOJI[p.category]||'🧶'}</span>
+    <p style="font-size:.62rem;color:var(--text-lt);letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:0 8px;">Add image</p>
+  </div>`;
+}
+
+/* ─────────────────────────────────────────────
+   RENDER PRODUCT GRID
+──────────────────────────────────────────────── */
+/* Products shown at first; "Load More" then reveals every remaining item */
+const FIRST_BATCH = 8;
+let shownCount  = FIRST_BATCH;
+let currentList = [];
+
+function productCardHTML(p) {
+  const badgeHTML = p.badge
+    ? `<span class="pbadge pbadge-${p.badge === 'bestseller' ? 'best' : p.badge}">${
+        p.badge === 'bestseller' ? 'Best Seller' : p.badge.charAt(0).toUpperCase() + p.badge.slice(1)
+      }</span>` : '';
+  const heartClass = wishlist.has(p.id) ? 'pwish on' : 'pwish';
+  const heart = wishlist.has(p.id) ? '❤️' : '🤍';
+
+  return `
+  <div class="pcard fu" data-id="${p.id}" data-cat="${p.category}">
+    <div class="pcard-img" onclick="openModal(${p.id})">
+      ${cardImgHTML(p, 'pcard-img-el')}
+      ${badgeHTML}
+      <button class="${heartClass}" onclick="toggleWish(event,${p.id})" aria-label="Wishlist">${heart}</button>
+      <button class="pqv" onclick="event.stopPropagation();openModal(${p.id})">Quick View</button>
+    </div>
+    <div class="pcard-body">
+      <div class="pcard-cat">${catLabel(p.category)}</div>
+      <div class="pcard-name" onclick="openModal(${p.id})">${p.name}</div>
+      <div class="pcard-meta">
+        <div class="pcard-price">
+          ${p.originalPrice ? `<s>${priceStr(p.originalPrice)}</s> ` : ''}${priceStr(p.price)}
+        </div>
+        <div class="stars">${'⭐'.repeat(p.rating)}</div>
+      </div>
+      <button class="padd" onclick="event.stopPropagation();addToCart(${p.id})">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        Add to Cart
+      </button>
+    </div>
+  </div>`;
+}
+
+function updateLoadMore() {
+  const row = document.getElementById('loadMoreRow');
+  const btn = document.getElementById('loadMoreBtn');
+  if (!row || !btn) return;
+  const left = currentList.length - shownCount;
+  row.style.display = left > 0 ? '' : 'none';
+  btn.textContent = left > 0 ? 'Load More (' + left + ' more)' : 'Load More';
+}
+
+function renderProducts(list) {
+  const grid = document.getElementById('prodGrid');
+  currentList = list;
+  shownCount  = FIRST_BATCH;
+  if (!list.length) {
+    grid.innerHTML = `<div class="no-results">
+      <div class="icon">🧶</div>
+      <h3>${activeFilter !== 'all' ? 'New pieces coming soon' : 'No products found'}</h3>
+      <p>${activeFilter !== 'all' ? 'We’re still crocheting this collection. Try another one or' : 'Try a different filter or'}
+        <button style="background:none;border:none;cursor:pointer;color:var(--gold);text-decoration:underline;font-family:inherit;font-size:inherit;" onclick="openGSO()">search all products</button>.
+      </p>
+    </div>`;
+    updateLoadMore();
+    return;
+  }
+  grid.innerHTML = list.slice(0, shownCount).map(productCardHTML).join('');
+  updateLoadMore();
+  observeFU();
+}
+
+/* Reveal ALL remaining products (appends only the new cards — no flicker or scroll jump) */
+function loadMore() {
+  const grid = document.getElementById('prodGrid');
+  const next = currentList.slice(shownCount);
+  if (!next.length) return;
+  grid.insertAdjacentHTML('beforeend', next.map(productCardHTML).join(''));
+  shownCount = currentList.length;
+  updateLoadMore();
+  observeFU();
+}
+
+/* ─────────────────────────────────────────────
+   FILTER (main grid)
+──────────────────────────────────────────────── */
+function filterProducts(cat) {
+  activeFilter = cat;
+  const tabsEl = document.getElementById('filterTabs');
+  document.querySelectorAll('.ftab').forEach(t => {
+    const on = t.dataset.cat === cat;
+    t.classList.toggle('active', on);
+    if (on && tabsEl) {   /* keep the active tab visible in the scrollable row */
+      tabsEl.scrollTo({ left: t.offsetLeft - (tabsEl.clientWidth - t.offsetWidth) / 2, behavior: 'smooth' });
+    }
+  });
+  renderProducts(productsIn(cat));
+}
+
+function setFilterAndScroll(cat) {
+  filterProducts(cat);
+  document.getElementById('shop').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ─────────────────────────────────────────────
+   UPDATE CATEGORY COUNTS
+──────────────────────────────────────────────── */
+function updateCatCounts() {
+  /* Collection cards */
+  const row = document.getElementById('catRow');
+  if (row) {
+    const cards = COLLECTIONS.map(c => {
+      const n = productsIn(c.key).length;
+      return `
+      <div class="cat-card" onclick="setFilterAndScroll('${c.key}')">
+        <div class="cat-img-wrap">
+          <div class="cat-ph"><span>${c.emoji}</span><p>${c.label}</p></div>
+        </div>
+        <div class="cat-foot">
+          <div class="cat-foot-name">${c.label}</div>
+          <div class="cat-foot-count" id="cat-count-${c.key}">${n} product${n !== 1 ? 's' : ''}</div>
+        </div>
+      </div>`;
+    }).join('');
+    row.innerHTML = cards + `
+      <div class="cat-card" onclick="setFilterAndScroll('all')">
+        <div class="cat-img-wrap">
+          <div class="cat-ph"><span>🧶</span><p>All</p></div>
+        </div>
+        <div class="cat-foot">
+          <div class="cat-foot-name">View All</div>
+          <div class="cat-foot-count" id="cat-count-all">${PRODUCTS.length} products</div>
+        </div>
+      </div>`;
+  }
+
+  /* Shop filter tabs */
+  const tabs = document.getElementById('filterTabs');
+  if (tabs) {
+    tabs.querySelectorAll('.ftab:not([data-cat="all"])').forEach(t => t.remove());
+    COLLECTIONS.forEach(c => {
+      const b = document.createElement('button');
+      b.className = 'ftab' + (activeFilter === c.key ? ' active' : '');
+      b.dataset.cat = c.key;
+      b.textContent = c.label;
+      b.onclick = () => filterProducts(c.key);
+      tabs.appendChild(b);
+    });
+  }
+
+  /* Search overlay pills */
+  const pills = document.getElementById('gsoPills');
+  if (pills) {
+    pills.querySelectorAll('.gso-pill:not([data-cat="all"])').forEach(t => t.remove());
+    COLLECTIONS.forEach(c => {
+      const b = document.createElement('button');
+      b.className = 'gso-pill';
+      b.dataset.cat = c.key;
+      b.textContent = c.label;
+      pills.appendChild(b);
+    });
+  }
+}
+
+/* ─────────────────────────────────────────────
+   GLOBAL SEARCH OVERLAY
+──────────────────────────────────────────────── */
+function openGSO() {
+  document.getElementById('gso').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('gsoInput').focus(), 80);
+  renderGSOResults('', 'all');
+}
+
+function closeGSO() {
+  document.getElementById('gso').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('gsoInput').value = '';
+  gsoActiveCat = 'all';
+  document.querySelectorAll('.gso-pill').forEach(p =>
+    p.classList.toggle('active', p.dataset.cat === 'all'));
+}
+
+function renderGSOResults(query, cat) {
+  const q = query.trim().toLowerCase();
+  let list = productsIn(cat);
+  if (q) list = list.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    catLabel(p.category).toLowerCase().includes(q) ||
+    (p.desc || '').toLowerCase().includes(q)
+  );
+
+  document.getElementById('gsoCount').textContent =
+    list.length === 0 ? 'No products found'
+    : `${list.length} product${list.length !== 1 ? 's' : ''} found`;
+
+  document.getElementById('gsoPop').style.display = q ? 'none' : 'block';
+
+  const res = document.getElementById('gsoResults');
+  if (!list.length) {
+    res.innerHTML = `<div class="gso-empty">
+      <div class="gso-empty-icon">🧶</div>
+      <h3>Nothing found</h3>
+      <p>Try a different keyword or browse our categories above.</p>
+    </div>`;
+    return;
+  }
+
+  res.innerHTML = list.map(p => `
+    <div class="grc" onclick="grcClick(${p.id})" role="listitem" tabindex="0"
+         onkeydown="if(event.key==='Enter')grcClick(${p.id})">
+      ${p.img
+        ? `<img src="${imgSrc(p.img)}" alt="${p.name}" class="grc-img" loading="lazy" decoding="async">`
+        : `<div class="grc-img" style="display:flex;align-items:center;justify-content:center;font-size:2.6rem;background:linear-gradient(145deg,var(--cream-d),var(--gold-pale));">${CAT_EMOJI[p.category]||'🧶'}</div>`
+      }
+      <div class="grc-body">
+        <div class="grc-cat">${catLabel(p.category)}</div>
+        <div class="grc-name">${highlight(p.name, q)}</div>
+        <div class="grc-price">${priceStr(p.price)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function grcClick(id) {
+  closeGSO();
+  openModal(id);
+}
+
+function setGSOQuery(val) {
+  document.getElementById('gsoInput').value = val;
+  renderGSOResults(val, gsoActiveCat);
+}
+
+/* Input listener */
+document.getElementById('gsoInput').addEventListener('input', e =>
+  renderGSOResults(e.target.value, gsoActiveCat));
+
+/* Category pill listeners */
+document.getElementById('gsoPills').addEventListener('click', e => {
+  const pill = e.target.closest('.gso-pill');
+  if (!pill) return;
+  gsoActiveCat = pill.dataset.cat;
+  document.querySelectorAll('.gso-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  renderGSOResults(document.getElementById('gsoInput').value, gsoActiveCat);
+});
+
+/* ─────────────────────────────────────────────
+   CART
+──────────────────────────────────────────────── */
+function addToCart(id, qty = 1) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  const ex = cart.find(x => x.id === id);
+  if (ex) ex.qty += qty; else cart.push({...p, qty});
+  updateCartUI();
+  toast('✦ ' + p.name + ' added to cart');
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x => x.id !== id);
+  updateCartUI();
+}
+
+function changeCartQty(id, delta) {
+  const item = cart.find(x => x.id === id);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const total    = cart.reduce((s,x) => s + x.qty, 0);
+  const subtotal = cart.reduce((s,x) => s + x.price * x.qty, 0);
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = total;
+  badge.classList.toggle('on', total > 0);
+
+  const wrap  = document.getElementById('cartItems');
+  const ft    = document.getElementById('cartFt');
+
+  if (!cart.length) {
+    wrap.innerHTML = `<div class="cart-empty-state">
+      <div class="ei">🛍️</div>
+      <h4>Your basket is empty</h4>
+      <p>Discover our handcrafted treasures.</p>
+    </div>`;
+    ft.style.display = 'none';
+  } else {
+    wrap.innerHTML = cart.map(item => `
+      <div class="ci">
+        ${item.img
+          ? `<img src="${imgSrc(item.img)}" alt="${item.name}" class="ci-img" loading="lazy" decoding="async">`
+          : `<div class="ci-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">${CAT_EMOJI[item.category]||'🧶'}</div>`
+        }
+        <div class="ci-info">
+          <div class="ci-name">${item.name}</div>
+          <div class="ci-price">${priceStr(item.price)}</div>
+          <div class="qctrl">
+            <button class="qb" onclick="changeCartQty(${item.id},-1)">−</button>
+            <span class="qn">${item.qty}</span>
+            <button class="qb" onclick="changeCartQty(${item.id},1)">+</button>
+          </div>
+          <button class="ci-rm" onclick="removeFromCart(${item.id})">Remove</button>
+        </div>
+      </div>
+    `).join('');
+    document.getElementById('cartTotal').textContent = priceStr(subtotal);
+    ft.style.display = 'block';
+  }
+}
+
+function toggleCart() {
+  document.getElementById('cartDrawer').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+
+/* ─────────────────────────────────────────────
+   WISHLIST
+──────────────────────────────────────────────── */
+function toggleWish(e, id) {
+  e.stopPropagation();
+  const p = PRODUCTS.find(x => x.id === id);
+  wishlist.has(id) ? wishlist.delete(id) : wishlist.add(id);
+  toast(wishlist.has(id) ? '❤️ ' + p.name + ' added to wishlist' : 'Removed from wishlist');
+  const btn = document.querySelector(`.pcard[data-id="${id}"] .pwish`);
+  if (btn) {
+    btn.classList.toggle('on', wishlist.has(id));
+    btn.innerHTML = wishlist.has(id) ? '❤️' : '🤍';
+  }
+}
+
+/* ─────────────────────────────────────────────
+   QUICK VIEW MODAL
+──────────────────────────────────────────────── */
+function openModal(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  modalProduct = p; modalQtyVal = 1;
+
+  document.getElementById('qvImgWrap').innerHTML = p.img
+    ? `<img src="${imgSrc(p.img)}" alt="${p.name}" class="qv-img" style="display:block;" decoding="async">`
+    : `<div class="qv-img" style="font-size:4.5rem;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,var(--cream-d),var(--gold-pale));">${CAT_EMOJI[p.category]||'🧶'}</div>`;
+
+  document.getElementById('qvCat').textContent   = catLabel(p.category);
+  document.getElementById('qvName').textContent  = p.name;
+  document.getElementById('qvPrice').textContent = priceStr(p.price);
+  document.getElementById('qvDesc').textContent  = p.desc;
+  document.getElementById('qvQty').textContent   = 1;
+
+  document.getElementById('modalBg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modalBg')) {
+    document.getElementById('modalBg').classList.remove('open');
+    if (!document.getElementById('gso').classList.contains('open'))
+      document.body.style.overflow = '';
+  }
+}
+
+function changeModalQty(d) {
+  modalQtyVal = Math.max(1, modalQtyVal + d);
+  document.getElementById('qvQty').textContent = modalQtyVal;
+}
+
+function addFromModal() {
+  if (modalProduct) { addToCart(modalProduct.id, modalQtyVal); closeModal(); }
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE NAV
+──────────────────────────────────────────────── */
+function toggleMobNav() {
+  document.getElementById('mobNav').classList.toggle('open');
+  document.getElementById('burger').classList.toggle('open');
+}
+
+/* ─────────────────────────────────────────────
+   NEWSLETTER
+──────────────────────────────────────────────── */
+function subscribeNL() {
+  const v = document.getElementById('nlEmail').value.trim();
+  if (!v || !/\S+@\S+\.\S+/.test(v)) { toast('Please enter a valid email address.'); return; }
+  document.getElementById('nlEmail').value = '';
+  toast('✦ Welcome to the Bunaii Circle! 🌿');
+}
+
+/* ─────────────────────────────────────────────
+   CONTACT FORM
+   Submits via Netlify Forms (works automatically since
+   this site is hosted on Netlify — no extra signup needed).
+   IMPORTANT ONE-TIME SETUP: to actually receive these as
+   emails at bunaiistore@gmail.com, go to your Netlify
+   dashboard → Site settings → Forms → Notifications →
+   "Add notification" → Email notification → enter
+   bunaiistore@gmail.com. Without that step, submissions
+   still land safely in the Netlify dashboard under Forms,
+   just without an email alert.
+──────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+  const INBOX = 'bunaiistore@gmail.com';          /* all messages are emailed here (free, via FormSubmit) */
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    if (fd.get('_honey')) return;                  /* spam bot filled the hidden field */
+
+    const btn = form.querySelector('button[type="submit"]');
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.style.opacity = '.7';
+
+    const name = ((fd.get('firstName') || '') + ' ' + (fd.get('lastName') || '')).trim();
+    const subj = fd.get('subject') || 'Website enquiry';
+
+    fetch('https://formsubmit.co/ajax/' + INBOX, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        email: fd.get('email'),                    /* FormSubmit uses this as Reply-To */
+        subject: subj,
+        message: fd.get('message'),
+        _subject: 'Bunaii Store — ' + subj + ' (' + name + ')',
+        _template: 'table',
+        _captcha: 'false'
+      })
+    })
+      .then(r => r.json())
+      .then(j => {
+        if (String(j.success) !== 'true') throw new Error(j.message || 'Not accepted');
+        toast("Message sent! We'll reply within 24 hours. 💌");
+        form.reset();
+      })
+      .catch(err => {
+        console.error('Contact form failed:', err);
+        toast('Could not send (' + String(err.message).slice(0, 70) + ') — please email us at ' + INBOX);
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        btn.style.opacity = '';
+      });
+  });
+});
+
+/* ─────────────────────────────────────────────
+   TOAST
+──────────────────────────────────────────────── */
+function toast(msg) {
+  const el = document.getElementById('toastEl');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(() => el.classList.remove('on'), 3200);
+}
+
+/* ─────────────────────────────────────────────
+   SCROLL
+──────────────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  document.getElementById('navbar').classList.toggle('scrolled', y > 20);
+  document.getElementById('stt').classList.toggle('show', y > 400);
+}, {passive:true});
+
+/* ─────────────────────────────────────────────
+   KEYBOARD SHORTCUTS
+──────────────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('gso').classList.contains('open'))    closeGSO();
+    if (document.getElementById('modalBg').classList.contains('open')) closeModal();
+  }
+  // Cmd/Ctrl+K to open search
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    openGSO();
+  }
+});
+
+/* ─────────────────────────────────────────────
+   FADE-UP INTERSECTION OBSERVER
+──────────────────────────────────────────────── */
+function observeFU() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('vis'); io.unobserve(en.target); }
+    });
+  }, {threshold:.1});
+  document.querySelectorAll('.fu:not(.vis)').forEach(el => io.observe(el));
+}
+
+/* ─────────────────────────────────────────────
+   FAQ ACCORDION
+──────────────────────────────────────────────── */
+function toggleFAQ(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+
+/* ─────────────────────────────────────────────
+   HERO SLIDESHOW
+   To swap images: replace .hero-slide-ph divs with
+   <img src="your-image.jpg"> inside each .hero-slide
+   To change speed: edit SLIDE_INTERVAL (ms)
+
+   PERFORMANCE NOTE: only the first slide loads immediately.
+   The rest use data-src and are fetched on demand (loadSlideImg),
+   one slide ahead of time, so the page doesn't have to download
+   all 11 hero photos before it can even render.
+──────────────────────────────────────────────── */
+let currentSlide = 0;
+const SLIDE_INTERVAL = 2000;
+
+function loadSlideImg(slide) {
+  if (!slide) return;
+  const img = slide.querySelector('img[data-src]');
+  if (img) { img.src = img.dataset.src; img.removeAttribute('data-src'); }
+}
+
+function goToSlide(n) {
+  const slides = document.querySelectorAll('#heroSlideshow .hero-slide');
+  const dots   = document.querySelectorAll('.hero-dot');
+  slides.forEach((s,i) => s.classList.toggle('active', i === n));
+  dots.forEach((d,i)   => d.classList.toggle('active', i === n));
+  currentSlide = n;
+  // Preload the next slide's image ahead of time so it's ready when it appears
+  loadSlideImg(slides[(n + 1) % slides.length]);
+}
+
+function nextSlide() {
+  const slides = document.querySelectorAll('#heroSlideshow .hero-slide');
+  goToSlide((currentSlide + 1) % slides.length);
+}
+
+let slideTimer = setInterval(nextSlide, SLIDE_INTERVAL);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ss = document.getElementById('heroSlideshow');
+  if (ss) {
+    // Preload slide 2 shortly after first paint (not blocking initial load)
+    setTimeout(() => loadSlideImg(document.querySelectorAll('#heroSlideshow .hero-slide')[1]), 400);
+    ss.addEventListener('mouseenter', () => clearInterval(slideTimer));
+    ss.addEventListener('mouseleave', () => { clearInterval(slideTimer); slideTimer = setInterval(nextSlide, SLIDE_INTERVAL); });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   PROMO BANNER CAROUSEL (Forever Flowers ⇄ Best Seller)
+   Swipe right → Best Seller. Swipe left → Forever Flowers.
+   Slide 0 = Forever Flowers, Slide 1 = Best Seller.
+──────────────────────────────────────────────── */
+let promoSlide = 0;
+
+function goToPromoSlide(n) {
+  promoSlide = n;
+  const track = document.getElementById('promoTrack');
+  if (track) track.style.transform = `translateX(-${n * 50}%)`;
+  document.querySelectorAll('.promo-dot').forEach((d,i) => d.classList.toggle('active', i === n));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const wrap  = document.getElementById('promoBanners');
+  const track = document.getElementById('promoTrack');
+  if (!wrap || !track) return;
+
+  let startX = 0, startY = 0, deltaX = 0, dragging = false, dir = null; // dir: null | 'h' | 'v'
+
+  function dragStart(x, y) {
+    startX = x; startY = y; deltaX = 0; dragging = true; dir = null;
+    track.classList.add('dragging');
+  }
+  function dragMove(x, y, evt) {
+    if (!dragging) return;
+    deltaX = x - startX;
+    const deltaY = y - startY;
+    if (!dir && (Math.abs(deltaX) > 6 || Math.abs(deltaY) > 6)) {
+      dir = Math.abs(deltaX) > Math.abs(deltaY) ? 'h' : 'v';
+    }
+    if (dir === 'h') {
+      if (evt && evt.cancelable) evt.preventDefault(); // stop the page from scrolling once we know it's a horizontal swipe
+      const pct = (deltaX / wrap.offsetWidth) * 50;
+      track.style.transform = `translateX(calc(-${promoSlide * 50}% + ${pct}%))`;
+    }
+  }
+  function dragEnd() {
+    if (!dragging) return;
+    dragging = false;
+    track.classList.remove('dragging');
+    if (dir === 'h' && Math.abs(deltaX) > 40) {
+      // Swipe right (finger moved right) → Best Seller. Swipe left → Forever Flowers.
+      goToPromoSlide(deltaX > 0 ? 1 : 0);
+    } else {
+      goToPromoSlide(promoSlide);
+    }
+    dir = null;
+  }
+
+  wrap.addEventListener('touchstart', e => dragStart(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
+  wrap.addEventListener('touchmove',  e => dragMove(e.touches[0].clientX, e.touches[0].clientY, e), {passive:false});
+  wrap.addEventListener('touchend',   dragEnd);
+
+  wrap.addEventListener('mousedown', e => dragStart(e.clientX, e.clientY));
+  window.addEventListener('mousemove', e => { if (dragging) dragMove(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', dragEnd);
+});
+
+/* ─────────────────────────────────────────────
+   INIT
+──────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  updateCatCounts();
+  renderProducts(PRODUCTS);
+  updateCartUI();
+  observeFU();
+});
+
+</script>
+</body>
+</html>

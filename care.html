@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Care Instructions — Bunaii Store</title>
+<meta name="description" content="Care instructions for Bunaii Store handcrafted crochet products.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --olive:#4a5240;--olive-dk:#2e3328;
+  --beige:#e8dece;--cream:#f7f2eb;--cream-d:#f0e9de;
+  --gold:#b89b6a;--gold-lt:#d4b98a;--gold-pale:#e8d5b0;
+  --text-dk:#2a2416;--text-md:#5a4e3a;--text-lt:#8a7d68;
+  --white:#fdfaf6;
+  --r-md:14px;--r-lg:28px;
+  --ease:.35s cubic-bezier(.25,.46,.45,.94);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Poppins',sans-serif;background:var(--cream);color:var(--text-dk);min-height:100vh;line-height:1.7}
+a{text-decoration:none;color:inherit}
+
+nav{
+  background:var(--white);border-bottom:1px solid rgba(184,155,106,.2);
+  padding:16px 24px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.nav-logo{display:flex;flex-direction:column;line-height:1.1}
+.nav-logo strong{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--olive-dk);letter-spacing:.04em}
+.nav-logo span{font-size:.52rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-family:'Poppins',sans-serif;font-weight:600}
+.back-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.8rem;font-weight:500;color:var(--text-lt);
+  border:1px solid rgba(184,155,106,.3);border-radius:50px;
+  padding:7px 16px;transition:var(--ease);
+}
+.back-btn:hover{background:var(--beige);color:var(--olive);border-color:var(--gold)}
+
+.page-hero{
+  background:linear-gradient(135deg,#4a3828 0%,#6a5040 60%,#8a6a50 100%);
+  padding:64px 24px 56px;text-align:center;position:relative;overflow:hidden;
+}
+.page-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 60% 40%,rgba(184,155,106,.2) 0%,transparent 65%);
+}
+.page-hero-icon{font-size:2.8rem;margin-bottom:14px;position:relative}
+.page-hero h1{
+  font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);
+  color:var(--white);letter-spacing:.02em;position:relative;
+}
+.page-hero p{
+  font-size:.9rem;color:rgba(247,242,235,.7);margin-top:10px;
+  letter-spacing:.04em;position:relative;
+}
+.gold-bar{width:52px;height:2px;background:var(--gold);margin:16px auto 0;border-radius:2px;position:relative}
+
+.page-wrap{max-width:780px;margin:0 auto;padding:56px 24px 80px}
+
+/* Care cards grid */
+.care-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:18px;margin-bottom:28px;
+}
+.care-card{
+  background:var(--white);border-radius:var(--r-md);
+  box-shadow:0 4px 20px rgba(74,82,64,.09);
+  padding:24px 20px;text-align:center;
+  border-bottom:3px solid var(--gold-pale);
+  transition:var(--ease);
+}
+.care-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(74,82,64,.14)}
+.care-card .icon{font-size:2rem;margin-bottom:10px}
+.care-card h3{font-size:.82rem;font-weight:600;color:var(--text-dk);margin-bottom:6px;letter-spacing:.04em}
+.care-card p{font-size:.78rem;color:var(--text-lt);line-height:1.6}
+
+/* Full list */
+.policy-card{
+  background:var(--white);border-radius:var(--r-lg);
+  box-shadow:0 8px 40px rgba(74,82,64,.10);
+  padding:44px 48px;
+}
+@media(max-width:600px){.policy-card{padding:28px 22px}}
+
+.policy-card > p.intro{
+  font-style:italic;color:var(--text-lt);font-size:.9rem;
+  margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--beige);
+}
+.policy-card ul{
+  list-style:none;display:flex;flex-direction:column;gap:16px;
+}
+.policy-card ul li{
+  display:flex;align-items:flex-start;gap:14px;
+  font-size:.93rem;color:var(--text-md);line-height:1.75;
+}
+.policy-card ul li::before{
+  content:'';flex-shrink:0;width:8px;height:8px;
+  border-radius:50%;background:var(--gold);margin-top:8px;
+}
+
+footer{
+  background:var(--olive-dk);text-align:center;
+  padding:24px;font-size:.75rem;color:rgba(247,242,235,.45);
+}
+footer a{color:var(--gold-lt);transition:color .2s}
+footer a:hover{color:var(--white)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <strong>Bunaii</strong>
+    <span>✦ Store.in ✦</span>
+  </div>
+  <a href="index.html" class="back-btn">
+    ← Back to Store
+  </a>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-icon">🧶</div>
+  <h1>Care Instructions</h1>
+  <p>Keep your handmade pieces looking beautiful for years to come</p>
+  <div class="gold-bar"></div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- Quick-glance cards -->
+  <div class="care-grid">
+    <div class="care-card">
+      <div class="icon">💧</div>
+      <h3>Moisture</h3>
+      <p>Keep away from excessive moisture and direct sunlight</p>
+    </div>
+    <div class="care-card">
+      <div class="icon">🪥</div>
+      <h3>Dusting</h3>
+      <p>Dust gently with a soft, dry cloth when needed</p>
+    </div>
+    <div class="care-card">
+      <div class="icon">🫧</div>
+      <h3>Washing</h3>
+      <p>Hand wash only if necessary — do not machine wash</p>
+    </div>
+    <div class="care-card">
+      <div class="icon">📦</div>
+      <h3>Storage</h3>
+      <p>Store in a clean, dry place to maintain shape and quality</p>
+    </div>
+    <div class="care-card">
+      <div class="icon">🤍</div>
+      <h3>Handling</h3>
+      <p>Handle with care to ensure long-lasting beauty</p>
+    </div>
+  </div>
+
+  <!-- Full text -->
+  <div class="policy-card">
+    <p class="intro">To keep your handmade crochet creations looking beautiful:</p>
+    <ul>
+      <li>Keep away from excessive moisture and direct sunlight.</li>
+      <li>Dust gently with a soft, dry cloth when needed.</li>
+      <li>Hand wash only if necessary; do not machine wash.</li>
+      <li>Store in a clean, dry place to maintain shape and quality.</li>
+      <li>Handle with care to ensure long-lasting beauty.</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 Bunaii Store · <a href="index.html">Home</a> · <a href="shipping.html">Shipping Info</a> · <a href="returns.html">Returns &amp; Exchanges</a> · <a href="custom-orders.html">Custom Orders</a></p>
+</footer>
+
+</body>
+</html>
