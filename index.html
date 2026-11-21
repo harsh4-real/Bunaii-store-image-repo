@@ -635,6 +635,9 @@ h1,h2,h3{font-family:'Playfair Display',serif;line-height:1.2}
 .pbadge-sale{background:var(--brown);color:var(--on-olive)}
 .pbadge-new{background:var(--olive);color:var(--on-olive)}
 .pbadge-best{background:var(--gold);color:var(--on-olive)}
+.pbadge-out{background:#8a3b2e;color:#f6ece0}
+.pcard.soldout .pcard-img-el{opacity:.5;filter:grayscale(.45)}
+.padd:disabled{opacity:.55;cursor:not-allowed;pointer-events:none}
 
 .pwish{
   position:absolute;top:13px;right:13px;width:35px;height:35px;border-radius:50%;
@@ -1734,7 +1737,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{
   </div>
 
   <div class="foot-bottom">
-    <div class="foot-copy">© 2025 Bunaii Store. All rights reserved. Made with 🧶 &amp; ❤️ in India</div>
+    <div class="foot-copy">© 2027 Bunaii Store. All rights reserved. Made with 🧶 &amp; ❤️ in India</div>
     <div class="pay-icons">
       <span class="picon">UPI</span>
       <span class="picon">VISA</span>
@@ -1822,103 +1825,7 @@ input:-webkit-autofill,textarea:-webkit-autofill{
    category: any key from COLLECTIONS below (e.g. "bags", "keychain", "hair", "bunches", "toys",
                 "pipecleaner", "plushies", "pillow", "warmwear"). "Under 700" is automatic (price < 700).
 ──────────────────────────────────────────────── */
-const PRODUCTS = [
-  /* ── BAGS ────────────────────────────────── */
-  {
-    id:1, name:"White Daisy Tote Bag", category:"bags",
-    price:1200, originalPrice:null, badge:"bestseller", rating:5,
-    desc:"Bright, cheerful, and handcrafted with love, this Sunflower Crochet Tote Bag is designed to add a unique handmade touch to your everyday style. Made using premium acrylic yarn, the bag features beautiful sunflower granny square motifs with a clean white base. The interior is fully lined with fabric, making it more durable, secure, and suitable for daily use. Each piece is carefully handmade, making every bag one of a kind. Material: Premium Acrylic Yarn with soft fabric inner lining. Pattern: Sunflower Granny Squares in White, Yellow & Brown. Strong handmade crochet shoulder straps. Perfect for everyday use, casual outings, shopping, college, beach trips and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. As each bag is handmade, slight variations in size and stitching may occur, making every piece unique.",
-    img:"White Daisy bag.jpg"
-  },
-  {
-    id:2, name:"Granny Square Crochet Sling Bag", category:"bags",
-    price:799, originalPrice:null, badge:"new", rating:5,
-    desc:"Minimal, elegant, and handcrafted with care, this Granny Square Crochet Sling Bag is perfect for adding a handmade charm to your everyday outfits. Made from premium acrylic yarn, it features a classic granny square design in a beautiful cream and purple color combination. The bag is fully lined with soft fabric on the inside, making it durable, sturdy, and ideal for daily essentials. Every bag is individually handcrafted, making each piece unique. Long handmade crochet shoulder strap, lightweight and comfortable to carry. Perfect for everyday use, casual outings, college, shopping, travel and thoughtful handmade gifts. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece truly one of a kind.",
-    img:"granny square bag.jpg"
-  },
-  {
-    id:3, name:"Heart Granny Crochet Sling Bag", category:"bags",
-    price:799, originalPrice:null, badge:null, rating:5,
-    desc:"Cute, timeless, and handcrafted with love, this Heart Granny Crochet Sling Bag is the perfect blend of style and functionality. Made with premium acrylic yarn, it features charming heart granny square motifs that add a unique handmade touch to your everyday look. The bag is fully lined with soft fabric on the inside, providing extra durability and a neat finish. Carefully handcrafted by skilled women artisans, every bag is unique and made with attention to detail. Long handmade crochet shoulder strap, lightweight and comfortable to carry. Perfect for everyday use, casual outings, college, shopping, travel and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece one of a kind.",
-    img:"Heart bag.jpg"
-  },
-  {
-    id:4, name:"Sling Granny Square Bag", category:"bags",
-    price:550, originalPrice:null, badge:"sale", rating:4,
-    desc:"Simple, stylish, and handcrafted with care, this Classic Granny Square Crochet Sling Bag is perfect for everyday use. Made from premium acrylic yarn, it features a vibrant multicolor granny square on a sleek black base, giving it a timeless handmade look. The bag is lined with soft fabric on the inside for added durability, strength, and a neat finish. Each bag is individually handcrafted by skilled women artisans, making every piece unique. Color: Black with Blue, Yellow & Cream Accents. Long handmade crochet shoulder strap. Perfect for everyday use, casual outings, college, shopping, travel and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece truly one of a kind.",
-    img:"sling granny bag.jpg"
-  },
-
-  /* ── PLUSHIES ─────────────────────────────── */
-  {
-    id:5, name:"Crochet Plushie", category:"plushies",
-    price:0, originalPrice:null, badge:"new", rating:5,
-    desc:"Soft, huggable, and handcrafted with love — our crochet plushies are made using premium acrylic yarn for a plush, durable finish. Each plushie is 100% handcrafted by skilled women artisans, making every piece one of a kind. Perfect for gifting, nursery decor, or as a sweet desk companion. Care: Keep away from excessive moisture, dust gently with a soft dry cloth, hand wash only if necessary, store in a clean dry place.",
-    img:""
-  },
-
-  /* ── KEYCHAINS ────────────────────────────── */
-  {
-    id:6, name:"Crochet Keychain", category:"keychain",
-    price:0, originalPrice:null, badge:"bestseller", rating:5,
-    desc:"Adorable handmade crochet keychains crafted with premium acrylic yarn, finished with a sturdy metal ring. A cute little detail for your bag, keys, or as a thoughtful small gift. 100% handcrafted by skilled women artisans, making every keychain unique. Care: Keep away from excessive moisture, dust gently with a soft dry cloth, store in a clean dry place.",
-    img:""
-  },
-
-  /* ── FLOWER POTS ──────────────────────────── */
-  {
-    id:7, name:"Crochet Flower Pot", category:"flowerpot",
-    price:0, originalPrice:null, badge:null, rating:5,
-    desc:"A charming handcrafted crochet flower arrangement potted for everlasting display. Made with premium acrylic yarn and carefully assembled by skilled artisans, this piece brings a pop of handmade color to any shelf, desk or windowsill — without the upkeep of real flowers. Reusable and long-lasting. Care: Keep away from excessive moisture and direct sunlight, dust gently with a soft dry cloth, store in a clean dry place.",
-    img:""
-  },
-
-  /* ── PREMIUM BOUQUET ──────────────────────── */
-  {
-    id:8, name:"Golden Sunflower Duo Bouquet", category:"bunches",
-    price:699, originalPrice:null, badge:"bestseller", rating:5,
-    desc:"A handcrafted bouquet featuring two beautiful crochet sunflowers, made with premium acrylic yarn and wrapped in elegant premium packaging. A timeless gift that brings warmth and happiness to every occasion. Premium Acrylic Yarn, Handmade, 2 Crochet Sunflowers, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-    img:"Golden Sunflower Duo.jpg"
-  },
-  {
-    id:9, name:"Ruby Bloom Bouquet", category:"bunches",
-    price:0, originalPrice:null, badge:"new", rating:5,
-    desc:"An elegant handcrafted crochet bouquet in rich ruby tones, made with premium acrylic yarn and finished with a beautiful gingham wrap. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-    img:"Ruby bloom bouquet.jpg"
-  },
-  {
-    id:10, name:"Surajmukhi Bouquet", category:"bunches",
-    price:0, originalPrice:null, badge:null, rating:5,
-    desc:"A cheerful handcrafted crochet sunflower bouquet (Surajmukhi), made with premium acrylic yarn and wrapped beautifully. A timeless gift that brings warmth and sunshine to every occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-    img:"Surajmukhi Bouquet.jpg"
-  },
-  {
-    id:11, name:"Pink Whisper Bunch", category:"bunches",
-    price:0, originalPrice:null, badge:null, rating:5,
-    desc:"A delicate handcrafted crochet lily bunch in soft pink hues, made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-    img:"Pink Whisper Bunch 2.jpg"
-  },
-  {
-    id:12, name:"Aurora Bloom Bouquet", category:"bunches",
-    price:0, originalPrice:null, badge:"new", rating:5,
-    desc:"A graceful handcrafted crochet bouquet featuring soft pastel blooms, made with premium acrylic yarn and wrapped in elegant premium packaging. A timeless gift that brings a touch of charm to every occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-    img:"Aurora bloom bouquet.jpg"
-  },
-
-  /* ── BOUQUET UNDER ₹799 ───────────────────── */
-  {
-    id:13, name:"Lily Bouquet", category:"bunches",
-    price:349, originalPrice:null, badge:"new", rating:5,
-    desc:"A handcrafted crochet lily made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-    img:"pink bouquet.jpg"
-  },
-  {
-    id:14, name:"Yellow Bouquet", category:"bunches",
-    price:399, originalPrice:null, badge:null, rating:5,
-    desc:"A handcrafted crochet lily made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-    img:"yellow bouquet.jpg"
-  },
-];
+let PRODUCTS = [];   /* loaded from products.json (managed from /admin) */
 
 /* ─────────────────────────────────────────────
    COLLECTIONS  (single source of truth)
@@ -1927,25 +1834,22 @@ const PRODUCTS = [
    "match" = computed collection; otherwise a product
    belongs to it when product.category === key.
 ──────────────────────────────────────────────── */
-const COLLECTIONS = [
-  { key:'keychain',    label:'Keychains',        emoji:'🔑' },
-  { key:'under700',    label:'Under 700',        emoji:'🏷️', match: p => p.price > 0 && p.price < 700 },
-  { key:'warmwear',    label:'Warm wear',        emoji:'🧣' },
-  { key:'toys',        label:'Toys',             emoji:'🪀' },
-  { key:'plushies',    label:'Plushies',         emoji:'🧸' },
-  { key:'pillow',      label:'Pillow',           emoji:'🛏️' },
-  { key:'pipecleaner', label:'Pipe cleaner',     emoji:'🌸' },
-  { key:'hair',        label:'Hair Accessories', emoji:'🎀' },
-  { key:'bunches',     label:'Bunches',          emoji:'💐' },
-  { key:'premium',     label:'Premium Bouquets', emoji:'🌹' },
-  { key:'bags',        label:'Bags',             emoji:'👜' }
-];
+let COLLECTIONS = [];
+let CAT_META = {};
+let CAT_EMOJI = {};
 
-/* Labels/emoji for product.category values (flowerpot has no collection card but still shows in All) */
-const CAT_META = { flowerpot:{ label:'Flower Pot', emoji:'🪴' } };
-COLLECTIONS.forEach(c => { if (!c.match) CAT_META[c.key] = { label:c.label, emoji:c.emoji }; });
-const CAT_EMOJI = {};
-Object.keys(CAT_META).forEach(k => CAT_EMOJI[k] = CAT_META[k].emoji);
+/* Build products + categories from products.json (edited via /admin) */
+function setCatalog(data) {
+  COLLECTIONS = (data.categories || []).map(c => {
+    const o = { key:c.key, label:c.label, emoji:c.emoji || '🧶' };
+    if (c.auto === 'under') { const max = +c.maxPrice || 700; o.match = p => p.price > 0 && p.price < max; }
+    return o;
+  });
+  PRODUCTS = (data.products || []).map(p => Object.assign(
+    { originalPrice:null, badge:null, rating:5, desc:'', img:'', soldOut:false }, p));
+  CAT_META = {}; CAT_EMOJI = {};
+  COLLECTIONS.forEach(c => { if (!c.match) { CAT_META[c.key] = { label:c.label, emoji:c.emoji }; CAT_EMOJI[c.key] = c.emoji; } });
+}
 function catLabel(key) { return (CAT_META[key] && CAT_META[key].label) || key; }
 
 function inCollection(p, key) {
@@ -1980,6 +1884,7 @@ function imgSrc(path) {
   /* Product photos are served as compressed .webp files (much smaller
      than the original .jpg uploads) — swap the extension automatically
      so the product data above doesn't need to change. */
+  if (/^images\//.test(path)) return encodeURI(path);   /* uploaded via admin: already optimised */
   const webpPath = path.replace(/\.(jpe?g|png)$/i, '.webp');
   return encodeURI(webpPath);
 }
@@ -2009,7 +1914,7 @@ let shownCount  = FIRST_BATCH;
 let currentList = [];
 
 function productCardHTML(p) {
-  const badgeHTML = p.badge
+  const badgeHTML = p.soldOut ? '<span class="pbadge pbadge-out">Out of stock</span>' : p.badge
     ? `<span class="pbadge pbadge-${p.badge === 'bestseller' ? 'best' : p.badge}">${
         p.badge === 'bestseller' ? 'Best Seller' : p.badge.charAt(0).toUpperCase() + p.badge.slice(1)
       }</span>` : '';
@@ -2017,7 +1922,7 @@ function productCardHTML(p) {
   const heart = wishlist.has(p.id) ? '❤️' : '🤍';
 
   return `
-  <div class="pcard fu" data-id="${p.id}" data-cat="${p.category}">
+  <div class="pcard fu${p.soldOut ? ' soldout' : ''}" data-id="${p.id}" data-cat="${p.category}">
     <div class="pcard-img" onclick="openModal(${p.id})">
       ${cardImgHTML(p, 'pcard-img-el')}
       ${badgeHTML}
@@ -2033,13 +1938,13 @@ function productCardHTML(p) {
         </div>
         <div class="stars">${'⭐'.repeat(p.rating)}</div>
       </div>
-      <button class="padd" onclick="event.stopPropagation();addToCart(${p.id})">
+      <button class="padd" ${p.soldOut ? 'disabled' : ''} onclick="event.stopPropagation();addToCart(${p.id})">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
           <line x1="3" y1="6" x2="21" y2="6"/>
           <path d="M16 10a4 4 0 0 1-8 0"/>
         </svg>
-        Add to Cart
+        ${p.soldOut ? 'Out of Stock' : 'Add to Cart'}
       </button>
     </div>
   </div>`;
@@ -2220,7 +2125,7 @@ function renderGSOResults(query, cat) {
       <div class="grc-body">
         <div class="grc-cat">${catLabel(p.category)}</div>
         <div class="grc-name">${highlight(p.name, q)}</div>
-        <div class="grc-price">${priceStr(p.price)}</div>
+        <div class="grc-price">${priceStr(p.price)}${p.soldOut ? ' · Out of stock' : ''}</div>
       </div>
     </div>
   `).join('');
@@ -2256,6 +2161,7 @@ document.getElementById('gsoPills').addEventListener('click', e => {
 function addToCart(id, qty = 1) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
+  if (p.soldOut) { toast('Sorry, ' + p.name + ' is out of stock'); return; }
   const ex = cart.find(x => x.id === id);
   if (ex) ex.qty += qty; else cart.push({...p, qty});
   updateCartUI();
@@ -2349,7 +2255,9 @@ function openModal(id) {
 
   document.getElementById('qvCat').textContent   = catLabel(p.category);
   document.getElementById('qvName').textContent  = p.name;
-  document.getElementById('qvPrice').textContent = priceStr(p.price);
+  document.getElementById('qvPrice').textContent = priceStr(p.price) + (p.soldOut ? '  ·  Out of stock' : '');
+  const qvAdd = document.querySelector('.qv-add');
+  if (qvAdd) { qvAdd.disabled = !!p.soldOut; qvAdd.style.opacity = p.soldOut ? '.5' : ''; }
   document.getElementById('qvDesc').textContent  = p.desc;
   document.getElementById('qvQty').textContent   = 1;
 
@@ -2622,10 +2530,20 @@ document.addEventListener('DOMContentLoaded', () => {
    INIT
 ──────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-  updateCatCounts();
-  renderProducts(PRODUCTS);
   updateCartUI();
   observeFU();
+  fetch('products.json', { cache: 'no-cache' })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(data => {
+      setCatalog(data);
+      updateCatCounts();
+      renderProducts(PRODUCTS);
+    })
+    .catch(err => {
+      console.error('Could not load products.json', err);
+      document.getElementById('prodGrid').innerHTML =
+        '<div class="no-results"><div class="icon">🧶</div><h3>Could not load products</h3><p>Please check your connection and refresh the page.</p></div>';
+    });
 });
 
 </script>
