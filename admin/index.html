@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#2b2116">
+<title>Bunaii Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#2b2116;--card:#3a2d1c;--card2:#44341f;--line:#5e4a2e;--gold:#b89b6a;--gold-lt:#d4b98a;--text:#e9dfcf;--mut:#a99d8b;--olive:#4a5a43;--danger:#b5543f;--ok:#8fae7a}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+[hidden]{display:none!important}
+button{font-family:inherit;cursor:pointer;border:0;color:inherit;-webkit-tap-highlight-color:transparent}
+input,select,textarea{font-family:inherit;font-size:16px;color:var(--text);background:#2f2418;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+label{display:block;font-size:.78rem;color:var(--mut);margin-bottom:12px}
+label>input,label>select,label>textarea{margin-top:5px}
+.logo{font-family:'Playfair Display',serif;font-weight:700;font-size:1.6rem;color:#dfe6d6;line-height:1}
+.logo small{display:block;font:600 .55rem 'Poppins';letter-spacing:.3em;color:var(--gold);margin-top:5px}
+.primary{background:var(--gold);color:#2b2116;font-weight:600;border-radius:12px;padding:13px 18px;font-size:.95rem}
+.ghost{background:transparent;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.85rem;color:var(--text)}
+.danger{background:transparent;border:1.5px solid var(--danger);color:#e59a88;border-radius:12px;padding:12px 16px;font-size:.9rem}
+.wide{width:100%}
+button:disabled{opacity:.55;cursor:not-allowed}
+
+/* login */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.lcard{width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px 22px}
+.lcard .logo{margin-bottom:6px}.lcard p{color:var(--mut);font-size:.85rem;margin-bottom:20px}
+.err{color:#ef9c89;font-size:.85rem;min-height:1.3em;margin:4px 0 10px}
+
+/* app shell */
+.top{position:sticky;top:0;z-index:20;background:rgba(43,33,22,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:10px}
+.top .logo{font-size:1.35rem;margin-right:auto}
+.pill{background:#7a5c2a;color:#fbe9c4;border-radius:99px;font-size:.68rem;font-weight:600;padding:4px 10px}
+.tabs{display:flex;gap:8px;padding:12px 16px 4px}
+.tabs button{flex:1;background:var(--card);border-radius:12px;padding:11px;font-weight:500;font-size:.9rem;border:1.5px solid transparent}
+.tabs button.on{border-color:var(--gold);color:var(--gold-lt)}
+main{padding:8px 16px;max-width:720px;margin:0 auto}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;background:var(--card);border:1.5px solid var(--line);border-radius:99px;padding:7px 14px;font-size:.8rem;color:var(--text)}
+.chip.on{background:var(--gold);color:#2b2116;border-color:var(--gold);font-weight:600}
+.hint{color:var(--mut);font-size:.78rem;margin:2px 0 12px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
+.item.out{border-color:#7b3a2d}
+.irow{display:flex;gap:12px;align-items:center}
+.thumb{flex:none;width:58px;height:58px;border-radius:12px;background:var(--card2);object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.imeta{min-width:0;flex:1}
+.iname{font-weight:600;font-size:.92rem;line-height:1.3;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.isub{color:var(--mut);font-size:.78rem;margin-top:2px}
+.tag{display:inline-block;font-size:.65rem;font-weight:600;border-radius:6px;padding:1px 7px;margin-left:4px;background:#5e4a2e;color:var(--gold-lt);vertical-align:middle}
+.tag.out{background:#8a3b2e;color:#fbe4dc}
+.iact{display:flex;gap:7px;margin-top:10px}
+.iact button{background:var(--card2);border-radius:10px;padding:8px 0;flex:1;font-size:.82rem}
+.iact .edit{flex:2;background:var(--olive);font-weight:600}
+.iact button:disabled{opacity:.3}
+.empty{text-align:center;color:var(--mut);padding:36px 10px;font-size:.9rem}
+.addbtn{width:100%;margin:6px 0 14px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:rgba(43,33,22,.97);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px}
+.bar .primary{flex:1}
+.ok-banner{background:#33452f;border:1px solid #567a4c;color:#d4efc9;border-radius:12px;padding:11px 14px;font-size:.85rem;margin:10px 0}
+
+/* bottom sheet */
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(10,7,3,.7);display:flex;align-items:flex-end;justify-content:center}
+.panel{background:var(--bg);border:1px solid var(--line);border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:94vh;overflow-y:auto;padding:16px 18px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:sticky;top:-16px;background:var(--bg);padding:6px 0}
+.ph h2{font-family:'Playfair Display',serif;font-size:1.25rem}
+.x{background:var(--card);width:36px;height:36px;border-radius:50%}
+.photo{width:100%;aspect-ratio:4/3;border-radius:16px;background:var(--card);border:1.5px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--mut);font-size:.85rem;text-align:center;padding:10px;margin-bottom:10px}
+.photo img{width:100%;height:100%;object-fit:contain;background:#241b10}
+.msg{font-size:.8rem;min-height:1.3em;margin:6px 0 14px;color:var(--mut)}.msg.ok{color:var(--ok)}.msg.err{color:#ef9c89}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sw{display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.95rem;color:var(--text);margin-bottom:16px}
+.sw input{width:22px;height:22px;margin:0;accent-color:#b5543f}
+.acts{display:flex;flex-direction:column;gap:10px}
+#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#f1e8da;color:#2b2116;padding:10px 16px;border-radius:12px;font-size:.85rem;z-index:60;max-width:90vw;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+</style>
+</head>
+<body>
+
+<!-- ───────── LOGIN ───────── -->
+<div id="login">
+  <div class="lcard">
+    <div class="logo">Bunaii<small>✦ STORE.IN ✦</small></div>
+    <p>Admin login</p>
+    <label>Username<input id="lu" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"></label>
+    <label>Password<input id="lp" type="password" autocomplete="current-password"></label>
+    <div class="err" id="lerr"></div>
+    <button class="primary wide" id="lbtn">Log in</button>
+  </div>
+</div>
+
+<!-- ───────── APP ───────── -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="logo">Bunaii<small>✦ ADMIN ✦</small></div>
+    <span class="pill" id="dirty" hidden>Not published</span>
+    <button class="ghost" id="logout">Log out</button>
+  </header>
+  <nav class="tabs">
+    <button data-tab="products" class="on">Products</button>
+    <button data-tab="cats">Categories</button>
+  </nav>
+  <main>
+    <div id="okmsg" class="ok-banner" hidden></div>
+    <section id="tab-products">
+      <div class="chips" id="chips"></div>
+      <button class="primary addbtn" id="addProd">+ Add product</button>
+      <p class="hint">Use ▲ ▼ to set the order shown on the website. Changes are saved as a draft until you tap Publish.</p>
+      <div id="plist"></div>
+    </section>
+    <section id="tab-cats" hidden>
+      <button class="primary addbtn" id="addCat">+ Add category</button>
+      <p class="hint">Categories appear on the website in this order.</p>
+      <div id="clist"></div>
+    </section>
+  </main>
+  <div class="bar">
+    <button class="ghost" id="discard">Discard</button>
+    <button class="primary" id="publish">Publish to website</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden></div>
+<div id="toast" hidden></div>
+
+<script>
+'use strict';
+const API = '/.netlify/functions/admin';
+const LIMIT = 200 * 1024;                       /* target photo size */
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const slug = s => String(s).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30);
+const clean = s => String(s || '').replace(/[<>]/g, '').replace(/"/g, '”').replace(/\s+/g, ' ').trim();
+
+let token = localStorage.getItem('bz_token');
+let S = { data: null, pending: {}, dirty: false };
+let filter = 'all';
+const previews = {};                             /* photo path → local preview URL */
+
+/* ───────── helpers ───────── */
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, 3200);
+}
+async function api(action, body) {
+  const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(Object.assign({ action, token }, body || {})) });
+  let d = {}; try { d = await r.json(); } catch (e) {}
+  if (r.status === 401 && action !== 'login') { logout('Session expired. Please log in again.'); throw new Error(d.error || 'Session expired'); }
+  if (!r.ok) throw new Error(d.error || ('Error ' + r.status));
+  return d;
+}
+function saveDraft() { try { localStorage.setItem('bz_draft', JSON.stringify({ data: S.data, pending: S.pending, dirty: S.dirty })); } catch (e) {} }
+function touch() { S.dirty = true; saveDraft(); renderAll(); }
+function photoSrc(path) {
+  if (!path) return '';
+  if (previews[path]) return previews[path];
+  if (/^images\//.test(path)) return '';
+  return '/' + encodeURI(path.replace(/\.(jpe?g|png)$/i, '.webp'));
+}
+const normalCats = () => S.data.categories.filter(c => !c.auto);
+const catName = k => (S.data.categories.find(c => c.key === k) || {}).label || k;
+
+/* ───────── login ───────── */
+async function login() {
+  const btn = $('#lbtn'); $('#lerr').textContent = ''; btn.disabled = true; btn.textContent = 'Checking…';
+  try {
+    const d = await api('login', { username: $('#lu').value.trim(), password: $('#lp').value });
+    token = d.token; localStorage.setItem('bz_token', token);
+    $('#lp').value = '';
+    await start();
+  } catch (e) { $('#lerr').textContent = e.message; }
+  btn.disabled = false; btn.textContent = 'Log in';
+}
+function logout(msg) {
+  token = null; localStorage.removeItem('bz_token');
+  $('#app').hidden = true; $('#login').hidden = false; $('#sheet').hidden = true;
+  $('#lerr').textContent = msg || '';
+}
+async function start() {
+  const d = await api('load');
+  S = { data: d.data, pending: {}, dirty: false };
+  try {
+    const dr = JSON.parse(localStorage.getItem('bz_draft') || 'null');
+    if (dr && dr.dirty && dr.data && confirm('You have unpublished changes from last time.\n\nOK = continue with them\nCancel = start fresh from the live website')) {
+      S = { data: dr.data, pending: dr.pending || {}, dirty: true };
+    } else localStorage.removeItem('bz_draft');
+  } catch (e) {}
+  $('#login').hidden = true; $('#app').hidden = false;
+  renderAll();
+}
+
+/* ───────── rendering ───────── */
+function renderAll() { renderChips(); renderProducts(); renderCats(); $('#dirty').hidden = !S.dirty; }
+function visible() { return S.data.products.filter(p => filter === 'all' || p.category === filter); }
+
+function renderChips() {
+  $('#chips').innerHTML = [{ key: 'all', label: 'All' }].concat(normalCats()).map(c =>
+    `<button class="chip${filter === c.key ? ' on' : ''}" data-f="${esc(c.key)}">${esc(c.label)}</button>`).join('');
+}
+function renderProducts() {
+  const list = visible();
+  if (!list.length) { $('#plist').innerHTML = '<div class="empty">No products here yet.<br>Tap “Add product” to create one.</div>'; return; }
+  $('#plist').innerHTML = list.map((p, i) => {
+    const src = photoSrc(p.img);
+    const thumb = src ? `<img class="thumb" src="${esc(src)}" alt="">` : '<div class="thumb">🧶</div>';
+    const price = p.price > 0 ? '₹' + p.price.toLocaleString('en-IN') : 'No price';
+    return `<div class="item${p.soldOut ? ' out' : ''}">
+      <div class="irow">${thumb}<div class="imeta">
+        <div class="iname">${esc(p.name)}</div>
+        <div class="isub">${price} · ${esc(catName(p.category))}${p.soldOut ? '<span class="tag out">Out of stock</span>' : ''}</div>
+      </div></div>
+      <div class="iact" data-id="${p.id}">
+        <button data-a="top" ${i === 0 ? 'disabled' : ''} aria-label="Move to top">⤒ Top</button>
+        <button data-a="up" ${i === 0 ? 'disabled' : ''} aria-label="Move up">▲</button>
+        <button data-a="down" ${i === list.length - 1 ? 'disabled' : ''} aria-label="Move down">▼</button>
+        <button class="edit" data-a="edit">Edit</button>
+      </div></div>`;
+  }).join('');
+}
+function renderCats() {
+  const cs = S.data.categories;
+  $('#clist').innerHTML = cs.map((c, i) => {
+    const n = S.data.products.filter(p => p.category === c.key).length;
+    const sub = c.auto ? `Automatic: products under ₹${c.maxPrice}` : `${n} product${n !== 1 ? 's' : ''}`;
+    return `<div class="item"><div class="irow"><div class="thumb">${esc(c.emoji)}</div>
+      <div class="imeta"><div class="iname">${esc(c.label)}</div><div class="isub">${sub}</div></div></div>
+      <div class="iact" data-key="${esc(c.key)}">
+        <button data-a="up" ${i === 0 ? 'disabled' : ''}>▲</button>
+        <button data-a="down" ${i === cs.length - 1 ? 'disabled' : ''}>▼</button>
+        <button class="edit" data-a="edit">Edit</button></div></div>`;
+  }).join('');
+}
+
+/* ───────── ordering ───────── */
+function moveProduct(id, a) {
+  const arr = S.data.products, vis = visible();
+  const pos = vis.findIndex(p => p.id === id); if (pos < 0) return;
+  const i = arr.findIndex(p => p.id === id);
+  if (a === 'top') { if (!pos) return; const first = arr.indexOf(vis[0]); const [p] = arr.splice(i, 1); arr.splice(first, 0, p); }
+  else {
+    const nb = vis[pos + (a === 'up' ? -1 : 1)]; if (!nb) return;
+    const j = arr.indexOf(nb); [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  touch();
+}
+function moveCat(key, a) {
+  const arr = S.data.categories, i = arr.findIndex(c => c.key === key), j = i + (a === 'up' ? -1 : 1);
+  if (j < 0 || j >= arr.length) return;
+  [arr[i], arr[j]] = [arr[j], arr[i]]; touch();
+}
+
+/* ───────── photo → light WebP (in the phone) ───────── */
+function loadImg(file) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file), im = new Image();
+    im.onload = () => { URL.revokeObjectURL(url); res(im); };
+    im.onerror = () => { URL.revokeObjectURL(url); rej(new Error('This photo format is not supported. Please choose a JPG, PNG or WebP photo.')); };
+    im.src = url;
+  });
+}
+const toBlob = (c, type, q) => new Promise(r => c.toBlob(r, type, q));
+async function toLight(file) {
+  const im = await loadImg(file);
+  let max = 1000, q = 0.82, type = 'image/webp', blob;
+  for (let k = 0; k < 9; k++) {
+    const sc = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+    const w = Math.max(1, Math.round(im.naturalWidth * sc)), h = Math.max(1, Math.round(im.naturalHeight * sc));
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(im, 0, 0, w, h);
+    blob = await toBlob(c, type, q);
+    if (blob && type === 'image/webp' && blob.type !== 'image/webp') { type = 'image/jpeg'; blob = await toBlob(c, type, q); }
+    if (!blob) throw new Error('Could not process this photo.');
+    if (blob.size <= LIMIT) break;
+    if (q > 0.6) q -= 0.07; else max = Math.round(max * 0.85);
+  }
+  return { blob, ext: blob.type === 'image/webp' ? 'webp' : 'jpg' };
+}
+const toB64 = blob => new Promise((res, rej) => { const f = new FileReader(); f.onload = () => res(String(f.result).split(',')[1]); f.onerror = () => rej(new Error('Could not read photo')); f.readAsDataURL(blob); });
+
+/* ───────── sheets ───────── */
+function openSheet(html) { const s = $('#sheet'); s.innerHTML = '<div class="panel">' + html + '</div>'; s.hidden = false; return s; }
+function closeSheet() { $('#sheet').hidden = true; $('#sheet').innerHTML = ''; }
+
+function productSheet(id) {
+  const cats = normalCats();
+  if (!cats.length) { toast('Add a category first.'); return; }
+  const isNew = id == null;
+  const cur = isNew
+    ? { name: '', category: (cats.find(c => c.key === filter) || cats[0]).key, price: '', originalPrice: '', badge: '', desc: '', img: '', soldOut: false }
+    : Object.assign({}, S.data.products.find(p => p.id === id));
+  const s = openSheet(`
+    <div class="ph"><h2>${isNew ? 'Add product' : 'Edit product'}</h2><button class="x" data-close aria-label="Close">✕</button></div>
+    <div class="photo" id="photoBox"></div>
+    <button class="ghost wide" id="pick"></button>
+    <input type="file" id="file" accept="image/*" hidden>
+    <div class="msg" id="pmsg"></div>
+    <label>Product name<input id="fName" maxlength="120"></label>
+    <label>Category<select id="fCat">${cats.map(c => `<option value="${esc(c.key)}">${esc(c.label)}</option>`).join('')}</select></label>
+    <div class="row2">
+      <label>Price (₹)<input id="fPrice" type="number" inputmode="numeric" min="0"></label>
+      <label>Old price (₹)<input id="fOld" type="number" inputmode="numeric" min="0" placeholder="optional"></label>
+    </div>
+    <label>Tag<select id="fBadge"><option value="">None</option><option value="new">New</option><option value="sale">Sale</option><option value="bestseller">Best seller</option></select></label>
+    <label>Description<textarea id="fDesc" rows="6"></textarea></label>
+    <label class="sw"><input type="checkbox" id="fOut"><span>Out of stock</span></label>
+    <div class="acts"><button class="primary" id="fSave">Save</button>${isNew ? '' : '<button class="danger" id="fDel">Delete product</button>'}</div>`);
+  $('#fName', s).value = cur.name; $('#fCat', s).value = cur.category;
+  $('#fPrice', s).value = cur.price || ''; $('#fOld', s).value = cur.originalPrice || '';
+  $('#fBadge', s).value = cur.badge || ''; $('#fDesc', s).value = cur.desc || ''; $('#fOut', s).checked = !!cur.soldOut;
+  const msg = (t, k) => { const m = $('#pmsg', s); m.textContent = t; m.className = 'msg ' + (k || ''); };
+  const showPhoto = () => {
+    const src = photoSrc(cur.img);
+    $('#photoBox', s).innerHTML = src ? `<img src="${esc(src)}" alt="">` : (cur.img ? 'Photo added ✓<br>(preview not available after reopening)' : 'No photo yet');
+    $('#pick', s).textContent = cur.img ? 'Change photo' : 'Choose photo';
+  };
+  showPhoto();
+  $('#pick', s).onclick = () => $('#file', s).click();
+  $('#file', s).onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    $('#pick', s).disabled = $('#fSave', s).disabled = true;
+    try {
+      msg('Making the photo light…');
+      const { blob, ext } = await toLight(f);
+      const path = 'images/' + (slug($('#fName', s).value) || 'product') + '-' + Date.now().toString(36) + '.' + ext;
+      msg('Uploading ' + Math.round(blob.size / 1024) + ' KB…');
+      const r = await api('blob', { content: await toB64(blob) });
+      previews[path] = URL.createObjectURL(blob); S.pending[path] = r.sha; cur.img = path; saveDraft(); showPhoto();
+      msg('Photo ready: ' + Math.round(f.size / 1024) + ' KB → ' + Math.round(blob.size / 1024) + ' KB', 'ok');
+    } catch (err) { msg(err.message, 'err'); }
+    $('#pick', s).disabled = $('#fSave', s).disabled = false; e.target.value = '';
+  };
+  $('#fSave', s).onclick = () => {
+    const name = clean($('#fName', s).value);
+    if (!name) return msg('Please enter the product name.', 'err');
+    if (!cur.img) return msg('Please choose a photo.', 'err');
+    const p = {
+      name, category: $('#fCat', s).value, price: Math.max(0, Math.round(+$('#fPrice', s).value || 0)),
+      originalPrice: +$('#fOld', s).value > 0 ? Math.round(+$('#fOld', s).value) : null,
+      badge: $('#fBadge', s).value || null, desc: $('#fDesc', s).value.replace(/[<>]/g, '').trim(),
+      img: cur.img, soldOut: $('#fOut', s).checked
+    };
+    if (isNew) { p.id = S.data.products.reduce((m, x) => Math.max(m, x.id), 0) + 1; p.rating = 5; S.data.products.unshift(p); }
+    else Object.assign(S.data.products.find(x => x.id === id), p);
+    closeSheet(); touch(); toast('Saved. Tap “Publish to website” to make it live.');
+  };
+  if (!isNew) $('#fDel', s).onclick = () => {
+    if (!confirm('Delete “' + cur.name + '”? This cannot be undone after you publish.')) return;
+    S.data.products = S.data.products.filter(p => p.id !== id); closeSheet(); touch(); toast('Product deleted (not published yet).');
+  };
+}
+
+function catSheet(key) {
+  const isNew = key == null, cs = S.data.categories;
+  const cur = isNew ? { label: '', emoji: '🧶' } : Object.assign({}, cs.find(c => c.key === key));
+  const n = isNew ? 0 : S.data.products.filter(p => p.category === key).length;
+  const others = cs.filter(c => !c.auto && c.key !== key);
+  const s = openSheet(`
+    <div class="ph"><h2>${isNew ? 'Add category' : 'Edit category'}</h2><button class="x" data-close aria-label="Close">✕</button></div>
+    <label>Category name<input id="cName" maxlength="40"></label>
+    <label>Emoji<input id="cEmoji" maxlength="8"></label>
+    ${cur.auto ? '<label>Show products cheaper than (₹)<input id="cMax" type="number" inputmode="numeric" min="1"></label>' : ''}
+    <div class="msg err" id="cmsg"></div>
+    <div class="acts"><button class="primary" id="cSave">Save</button>
+    ${isNew ? '' : '<button class="danger" id="cDelBtn">Delete category</button>'}</div>
+    ${n ? `<div id="moveBox" hidden style="margin-top:14px"><label>${n} product${n > 1 ? 's' : ''} will move to<select id="cMove">${others.map(c => `<option value="${esc(c.key)}">${esc(c.label)}</option>`).join('')}</select></label><button class="danger wide" id="cDelGo">Move products and delete</button></div>` : ''}`);
+  $('#cName', s).value = cur.label; $('#cEmoji', s).value = cur.emoji; if (cur.auto) $('#cMax', s).value = cur.maxPrice;
+  const err = t => $('#cmsg', s).textContent = t;
+  $('#cSave', s).onclick = () => {
+    const label = clean($('#cName', s).value); if (!label) return err('Please enter a name.');
+    const emoji = clean($('#cEmoji', s).value) || '🧶';
+    if (isNew) {
+      let k = slug(label) || 'cat', base = k, i = 2;
+      while (cs.some(c => c.key === k)) k = base + '-' + i++;
+      cs.push({ key: k, label, emoji });
+    } else {
+      const c = cs.find(x => x.key === key); c.label = label; c.emoji = emoji;
+      if (c.auto) c.maxPrice = Math.max(1, Math.round(+$('#cMax', s).value || 700));
+    }
+    closeSheet(); touch(); toast('Saved. Tap “Publish to website” to make it live.');
+  };
+  const del = moveTo => {
+    if (moveTo) S.data.products.forEach(p => { if (p.category === key) p.category = moveTo; });
+    S.data.categories = cs.filter(c => c.key !== key);
+    if (filter === key) filter = 'all';
+    closeSheet(); touch(); toast('Category deleted (not published yet).');
+  };
+  if (!isNew) $('#cDelBtn', s).onclick = () => {
+    if (!n) { if (confirm('Delete category “' + cur.label + '”?')) del(); return; }
+    if (!others.length) return err('Create another category first, so these products have somewhere to go.');
+    $('#moveBox', s).hidden = false; $('#cDelBtn', s).hidden = true;
+  };
+  if (n) $('#cDelGo', s).onclick = () => del($('#cMove', s).value);
+}
+
+/* ───────── publish ───────── */
+async function publish() {
+  if (!S.dirty) return toast('Nothing new to publish.');
+  const used = new Set(S.data.products.map(p => p.img));
+  const images = Object.keys(S.pending).filter(p => used.has(p)).map(p => ({ path: p, sha: S.pending[p] }));
+  if (!confirm('Publish ' + S.data.products.length + ' products to the website now?')) return;
+  const b = $('#publish'); b.disabled = true; b.textContent = 'Publishing…';
+  try {
+    await api('publish', { data: S.data, images });
+    S.pending = {}; S.dirty = false; localStorage.removeItem('bz_draft'); renderAll();
+    const m = $('#okmsg'); m.textContent = '✓ Published! The website updates in about 1–2 minutes.'; m.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' }); setTimeout(() => m.hidden = true, 15000);
+  } catch (e) { alert('Could not publish:\n' + e.message); }
+  b.disabled = false; b.textContent = 'Publish to website';
+}
+
+/* ───────── events ───────── */
+$('#lbtn').onclick = login;
+['#lu', '#lp'].forEach(i => $(i).addEventListener('keydown', e => { if (e.key === 'Enter') login(); }));
+$('#logout').onclick = () => logout();
+$('#publish').onclick = publish;
+$('#discard').onclick = () => {
+  if (!S.dirty) return toast('No draft changes.');
+  if (!confirm('Throw away all unpublished changes?')) return;
+  localStorage.removeItem('bz_draft'); start().then(() => toast('Draft discarded.')).catch(e => toast(e.message));
+};
+$('#addProd').onclick = () => productSheet(null);
+$('#addCat').onclick = () => catSheet(null);
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
+  $('#tab-products').hidden = b.dataset.tab !== 'products'; $('#tab-cats').hidden = b.dataset.tab !== 'cats';
+});
+$('#chips').onclick = e => { const c = e.target.closest('.chip'); if (c) { filter = c.dataset.f; renderChips(); renderProducts(); } };
+$('#plist').onclick = e => {
+  const b = e.target.closest('button[data-a]'); if (!b) return;
+  const id = +b.parentNode.dataset.id;
+  if (b.dataset.a === 'edit') productSheet(id); else moveProduct(id, b.dataset.a);
+};
+$('#clist').onclick = e => {
+  const b = e.target.closest('button[data-a]'); if (!b) return;
+  const key = b.parentNode.dataset.key;
+  if (b.dataset.a === 'edit') catSheet(key); else moveCat(key, b.dataset.a);
+};
+$('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet' || e.target.closest('[data-close]')) closeSheet(); });
+
+/* auto-login if the last session is still valid */
+if (token) start().catch(() => logout());
+</script>
+</body>
+</html>
