@@ -6,13 +6,6 @@
       "emoji": "🔑"
     },
     {
-      "key": "under700",
-      "label": "Under 700",
-      "emoji": "🏷️",
-      "auto": "under",
-      "maxPrice": 700
-    },
-    {
       "key": "warmwear",
       "label": "Warm wear",
       "emoji": "🧣"
@@ -23,14 +16,16 @@
       "emoji": "🪀"
     },
     {
+      "key": "under700",
+      "label": "Under 700",
+      "emoji": "🏷️",
+      "auto": "under",
+      "maxPrice": 700
+    },
+    {
       "key": "plushies",
       "label": "Plushies",
       "emoji": "🧸"
-    },
-    {
-      "key": "pillow",
-      "label": "Pillow",
-      "emoji": "🛏️"
     },
     {
       "key": "pipecleaner",
@@ -43,27 +38,48 @@
       "emoji": "🎀"
     },
     {
-      "key": "bunches",
-      "label": "Bunches",
-      "emoji": "💐"
-    },
-    {
-      "key": "premium",
-      "label": "Premium Bouquets",
-      "emoji": "🌹"
-    },
-    {
       "key": "bags",
       "label": "Bags",
       "emoji": "👜"
-    },
-    {
-      "key": "flowerpot",
-      "label": "Flower Pot",
-      "emoji": "🪴"
     }
   ],
   "products": [
+    {
+      "id": 47,
+      "name": "Pink clip",
+      "category": "hair",
+      "price": 180,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "",
+      "img": "images/product-mwxppbox.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 46,
+      "name": "Butterfly clip",
+      "category": "hair",
+      "price": 200,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "",
+      "img": "images/product-mwxpne1j.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 45,
+      "name": "Sunflower clip",
+      "category": "hair",
+      "price": 130,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "",
+      "img": "images/product-mwxpm9vr.jpg",
+      "soldOut": false
+    },
     {
       "id": 29,
       "name": "Duck",
@@ -77,18 +93,6 @@
       "soldOut": false
     },
     {
-      "id": 28,
-      "name": "Cute duck",
-      "category": "toys",
-      "price": 389,
-      "originalPrice": null,
-      "badge": null,
-      "rating": 5,
-      "desc": "Adorable, handmade crochet toy, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
-      "img": "images/product-mwxnn0oj.jpg",
-      "soldOut": false
-    },
-    {
       "id": 27,
       "name": "Cute teddy",
       "category": "toys",
@@ -98,6 +102,222 @@
       "rating": 5,
       "desc": "Adorable, handmade crochet toy, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
       "img": "images/product-mwxnizh8.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 12,
+      "name": "Aurora Bloom Bouquet",
+      "category": "keychain",
+      "price": 2200,
+      "originalPrice": null,
+      "badge": "new",
+      "rating": 5,
+      "desc": "A graceful handcrafted crochet bouquet featuring soft pastel blooms, made with premium acrylic yarn and wrapped in elegant premium packaging. A timeless gift that brings a touch of charm to every occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+      "img": "Aurora bloom bouquet.webp",
+      "soldOut": false
+    },
+    {
+      "id": 10,
+      "name": "Surajmukhi Bouquet",
+      "category": "keychain",
+      "price": 729,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "A cheerful handcrafted crochet sunflower bouquet (Surajmukhi), made with premium acrylic yarn and wrapped beautifully. A timeless gift that brings warmth and sunshine to every occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+      "img": "Surajmukhi Bouquet.webp",
+      "soldOut": false
+    },
+    {
+      "id": 44,
+      "name": "Pink lily",
+      "category": "pipecleaner",
+      "price": 789,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "",
+      "img": "images/product-mwxpfni2.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 43,
+      "name": "White lily",
+      "category": "pipecleaner",
+      "price": 799,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "",
+      "img": "images/product-mwxpemx7.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 42,
+      "name": "Pink Roses",
+      "category": "pipecleaner",
+      "price": 889,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "",
+      "img": "images/product-mwxpdj3i.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 41,
+      "name": "Just for you",
+      "category": "pipecleaner",
+      "price": 1399,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "",
+      "img": "images/product-mwxpc69u.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 40,
+      "name": "Sunflower",
+      "category": "pipecleaner",
+      "price": 1100,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "",
+      "img": "images/product-mwxpb83z.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 39,
+      "name": "Moon",
+      "category": "plushies",
+      "price": 389,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet plushie,carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet plushie \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxp71x3.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 38,
+      "name": "Evil eye",
+      "category": "plushies",
+      "price": 1399,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet pillow, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet pillow \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxp0rty.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 37,
+      "name": "Donut pillow",
+      "category": "plushies",
+      "price": 1799,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet pillow, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet pillow \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxoy3ax.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 36,
+      "name": "Teeth pillow",
+      "category": "plushies",
+      "price": 1899,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet pillow, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet pillow \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxow2yu.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 35,
+      "name": "Daisy pillow",
+      "category": "plushies",
+      "price": 1499,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet pillow ,carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet pillow \n• care ; gentle hand wash, recommended",
+      "img": "images/daisy-pillow-mwxozzve.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 34,
+      "name": "Cat",
+      "category": "plushies",
+      "price": 550,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet plushie , carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxoopyn.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 33,
+      "name": "Medium Duck",
+      "category": "toys",
+      "price": 350,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet toy, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxomjnq.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 32,
+      "name": "Bunny",
+      "category": "toys",
+      "price": 180,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet toy, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxojbc3.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 31,
+      "name": "Trio keychain",
+      "category": "toys",
+      "price": 280,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet toy, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxoetai.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 30,
+      "name": "Miffy",
+      "category": "toys",
+      "price": 489,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet toy, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxobqk8.jpg",
+      "soldOut": false
+    },
+    {
+      "id": 28,
+      "name": "Cute duck",
+      "category": "toys",
+      "price": 389,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Adorable, handmade crochet toy, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
+      "img": "images/product-mwxnn0oj.jpg",
       "soldOut": false
     },
     {
@@ -245,63 +465,27 @@
       "soldOut": false
     },
     {
-      "id": 13,
-      "name": "Lily Bouquet",
-      "category": "bunches",
-      "price": 349,
-      "originalPrice": null,
-      "badge": "new",
-      "rating": 5,
-      "desc": "A handcrafted crochet lily made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-      "img": "pink bouquet.webp",
-      "soldOut": false
-    },
-    {
-      "id": 11,
-      "name": "Pink Whisper Bunch",
-      "category": "bunches",
-      "price": 1499,
-      "originalPrice": null,
-      "badge": null,
-      "rating": 5,
-      "desc": "A delicate handcrafted crochet lily bunch in soft pink hues, made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-      "img": "Pink Whisper Bunch 2.webp",
-      "soldOut": false
-    },
-    {
-      "id": 8,
-      "name": "Golden Sunflower Duo Bouquet",
-      "category": "bunches",
-      "price": 699,
-      "originalPrice": null,
-      "badge": "bestseller",
-      "rating": 5,
-      "desc": "A handcrafted bouquet featuring two beautiful crochet sunflowers, made with premium acrylic yarn and wrapped in elegant premium packaging. A timeless gift that brings warmth and happiness to every occasion. Premium Acrylic Yarn, Handmade, 2 Crochet Sunflowers, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-      "img": "Golden Sunflower Duo.webp",
-      "soldOut": false
-    },
-    {
-      "id": 10,
-      "name": "Surajmukhi Bouquet",
-      "category": "bunches",
-      "price": 729,
-      "originalPrice": null,
-      "badge": null,
-      "rating": 5,
-      "desc": "A cheerful handcrafted crochet sunflower bouquet (Surajmukhi), made with premium acrylic yarn and wrapped beautifully. A timeless gift that brings warmth and sunshine to every occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-      "img": "Surajmukhi Bouquet.webp",
-      "soldOut": false
-    },
-    {
       "id": 1,
       "name": "White Daisy Tote Bag",
       "category": "bags",
-      "price": 1200,
+      "price": 999,
       "originalPrice": null,
       "badge": "bestseller",
       "rating": 5,
       "desc": "Bright, cheerful, and handcrafted with love, this Sunflower Crochet Tote Bag is designed to add a unique handmade touch to your everyday style. Made using premium acrylic yarn, the bag features beautiful sunflower granny square motifs with a clean white base. The interior is fully lined with fabric, making it more durable, secure, and suitable for daily use. Each piece is carefully handmade, making every bag one of a kind. Material: Premium Acrylic Yarn with soft fabric inner lining. Pattern: Sunflower Granny Squares in White, Yellow & Brown. Strong handmade crochet shoulder straps. Perfect for everyday use, casual outings, shopping, college, beach trips and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. As each bag is handmade, slight variations in size and stitching may occur, making every piece unique.",
       "img": "White Daisy bag.webp",
+      "soldOut": false
+    },
+    {
+      "id": 3,
+      "name": "Heart Granny Crochet Sling Bag",
+      "category": "bags",
+      "price": 789,
+      "originalPrice": null,
+      "badge": null,
+      "rating": 5,
+      "desc": "Cute, timeless, and handcrafted with love, this Heart Granny Crochet Sling Bag is the perfect blend of style and functionality. Made with premium acrylic yarn, it features charming heart granny square motifs that add a unique handmade touch to your everyday look. The bag is fully lined with soft fabric on the inside, providing extra durability and a neat finish. Carefully handcrafted by skilled women artisans, every bag is unique and made with attention to detail. Long handmade crochet shoulder strap, lightweight and comfortable to carry. Perfect for everyday use, casual outings, college, shopping, travel and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece one of a kind.",
+      "img": "Heart bag.webp",
       "soldOut": false
     },
     {
@@ -314,18 +498,6 @@
       "rating": 5,
       "desc": "Minimal, elegant, and handcrafted with care, this Granny Square Crochet Sling Bag is perfect for adding a handmade charm to your everyday outfits. Made from premium acrylic yarn, it features a classic granny square design in a beautiful cream and purple color combination. The bag is fully lined with soft fabric on the inside, making it durable, sturdy, and ideal for daily essentials. Every bag is individually handcrafted, making each piece unique. Long handmade crochet shoulder strap, lightweight and comfortable to carry. Perfect for everyday use, casual outings, college, shopping, travel and thoughtful handmade gifts. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece truly one of a kind.",
       "img": "granny square bag.webp",
-      "soldOut": false
-    },
-    {
-      "id": 3,
-      "name": "Heart Granny Crochet Sling Bag",
-      "category": "bags",
-      "price": 799,
-      "originalPrice": null,
-      "badge": null,
-      "rating": 5,
-      "desc": "Cute, timeless, and handcrafted with love, this Heart Granny Crochet Sling Bag is the perfect blend of style and functionality. Made with premium acrylic yarn, it features charming heart granny square motifs that add a unique handmade touch to your everyday look. The bag is fully lined with soft fabric on the inside, providing extra durability and a neat finish. Carefully handcrafted by skilled women artisans, every bag is unique and made with attention to detail. Long handmade crochet shoulder strap, lightweight and comfortable to carry. Perfect for everyday use, casual outings, college, shopping, travel and gifting. Care: Hand wash gently in cold water, do not bleach, dry flat in shade, store in a clean dry place. Slight variations in size, stitching, and pattern placement may occur, making every piece one of a kind.",
-      "img": "Heart bag.webp",
       "soldOut": false
     },
     {
@@ -342,14 +514,14 @@
     },
     {
       "id": 5,
-      "name": "Crochet Plushie",
+      "name": "Cat",
       "category": "plushies",
-      "price": 250,
+      "price": 550,
       "originalPrice": null,
       "badge": "new",
       "rating": 5,
-      "desc": "Soft, huggable, and handcrafted with love — our crochet plushies are made using premium acrylic yarn for a plush, durable finish. Each plushie is 100% handcrafted by skilled women artisans, making every piece one of a kind. Perfect for gifting, nursery decor, or as a sweet desk companion. Care: Keep away from excessive moisture, dust gently with a soft dry cloth, hand wash only if necessary, store in a clean dry place.",
-      "img": "images/crochet-plushie-mwq2sg82.jpg",
+      "desc": "Adorable, handmade crochet toy, carefully, crafted with softy and lots of love, perfect for gifting, collecting, or adding a cute touch to your space.\n\n• Material ; soft Yarn\n• type ; handmade crochet toy \n• care ; gentle hand wash, recommended",
+      "img": "images/crochet-plushie-mwxopvid.jpg",
       "soldOut": false
     },
     {
@@ -367,7 +539,7 @@
     {
       "id": 7,
       "name": "Crochet Flower Pot",
-      "category": "flowerpot",
+      "category": "keychain",
       "price": 550,
       "originalPrice": null,
       "badge": "bestseller",
@@ -377,39 +549,27 @@
       "soldOut": false
     },
     {
+      "id": 8,
+      "name": "Golden Sunflower Duo Bouquet",
+      "category": "keychain",
+      "price": 689,
+      "originalPrice": null,
+      "badge": "bestseller",
+      "rating": 5,
+      "desc": "A handcrafted bouquet featuring two beautiful crochet sunflowers, made with premium acrylic yarn and wrapped in elegant premium packaging. A timeless gift that brings warmth and happiness to every occasion. Premium Acrylic Yarn, Handmade, 2 Crochet Sunflowers, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
+      "img": "Golden Sunflower Duo.webp",
+      "soldOut": false
+    },
+    {
       "id": 9,
       "name": "Ruby Bloom Bouquet",
-      "category": "bunches",
-      "price": 0,
+      "category": "keychain",
+      "price": 1799,
       "originalPrice": null,
       "badge": "new",
       "rating": 5,
       "desc": "An elegant handcrafted crochet bouquet in rich ruby tones, made with premium acrylic yarn and finished with a beautiful gingham wrap. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
       "img": "Ruby bloom bouquet.webp",
-      "soldOut": false
-    },
-    {
-      "id": 12,
-      "name": "Aurora Bloom Bouquet",
-      "category": "bunches",
-      "price": 0,
-      "originalPrice": null,
-      "badge": "new",
-      "rating": 5,
-      "desc": "A graceful handcrafted crochet bouquet featuring soft pastel blooms, made with premium acrylic yarn and wrapped in elegant premium packaging. A timeless gift that brings a touch of charm to every occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-      "img": "Aurora bloom bouquet.webp",
-      "soldOut": false
-    },
-    {
-      "id": 14,
-      "name": "Yellow Bouquet",
-      "category": "bunches",
-      "price": 399,
-      "originalPrice": null,
-      "badge": null,
-      "rating": 5,
-      "desc": "A handcrafted crochet lily made with premium acrylic yarn and wrapped beautifully. A timeless gift for every special occasion. Premium Acrylic Yarn, Handmade, Elegant Bouquet Wrapping, Reusable & Long-lasting.",
-      "img": "yellow bouquet.webp",
       "soldOut": false
     }
   ]
